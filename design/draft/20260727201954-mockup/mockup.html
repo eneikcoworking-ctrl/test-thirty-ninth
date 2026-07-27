@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CRM Operator Console - Active Chat</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-bright": "#f8f9ff",
+                    "primary": "#004ac6",
+                    "surface-container-lowest": "#ffffff",
+                    "surface": "#f8f9ff",
+                    "on-tertiary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed": "#2f1500",
+                    "inverse-on-surface": "#eaf1ff",
+                    "surface-variant": "#d3e4fe",
+                    "on-secondary-container": "#007230",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "on-primary-container": "#eeefff",
+                    "on-tertiary-container": "#ffede1",
+                    "on-tertiary-fixed-variant": "#6e3900",
+                    "secondary": "#006e2d",
+                    "secondary-container": "#7cf994",
+                    "on-surface-variant": "#434655",
+                    "outline-variant": "#c3c6d7",
+                    "secondary-fixed-dim": "#62df7d",
+                    "primary-container": "#2563eb",
+                    "on-secondary": "#ffffff",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-primary-fixed": "#00174b",
+                    "primary-fixed": "#dbe1ff",
+                    "on-surface": "#0b1c30",
+                    "tertiary": "#824500",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#0053db",
+                    "tertiary-container": "#a65900",
+                    "on-background": "#0b1c30",
+                    "surface-container-low": "#eff4ff",
+                    "background": "#f8f9ff",
+                    "surface-dim": "#cbdbf5",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed": "#ffdcc3",
+                    "surface-container-high": "#dce9ff",
+                    "inverse-primary": "#b4c5ff",
+                    "surface-container": "#e5eeff",
+                    "error": "#ba1a1a",
+                    "secondary-fixed": "#7ffc97",
+                    "on-error-container": "#93000a",
+                    "on-secondary-fixed": "#002109",
+                    "tertiary-fixed-dim": "#ffb77d",
+                    "inverse-surface": "#213145",
+                    "outline": "#737686",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "on-secondary-fixed-variant": "#005320"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "gutter": "16px",
+                    "lg": "24px",
+                    "sm": "8px",
+                    "margin": "24px",
+                    "base": "4px",
+                    "md": "16px",
+                    "xs": "4px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-sm": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "label-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .priority-strip { width: 3px; height: 100%; position: absolute; left: 0; top: 0; }
+        .chat-container { height: calc(100vh - 128px); }
+        .glass-header { backdrop-filter: blur(8px); background-color: rgba(248, 249, 255, 0.9); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body-md text-on-surface overflow-hidden">
+<!-- Top Navigation Bar (Shared Component: TopAppBar) -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-gutter h-16 bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-sm">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant/50 transition-colors">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<div class="flex flex-col">
+<span class="text-headline-sm font-headline-sm font-bold text-primary">CRM Console</span>
+<span class="text-label-sm font-label-sm text-outline uppercase tracking-wider">Active Case</span>
+</div>
+</div>
+<div class="flex items-center gap-sm">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-label-md font-label-md flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                Active
+            </span>
+</div>
+</header>
+<!-- Side Navigation (Shared Component: NavigationDrawer) -->
+<aside class="hidden md:flex flex-col fixed left-0 top-0 h-full w-64 z-40 py-md bg-surface-container-low border-r border-outline-variant">
+<div class="px-md mb-xl flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a corporate customer service operator, shot with soft studio lighting. The person is smiling warmly, wearing a modern charcoal suit. The background is a clean, out-of-focus office environment with subtle blue and white light-mode tones consistent with a high-end CRM interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwaobbsOuq48AqHDkU8ILErpzsiQokaMwmZsXoxwOm2xCrQGaJlfVjgqGdpZfV3S1PWxp9GxIPiHh-SZLPpv8wyXXSX3p19Zm7QbwZrIFEe_reyOMxk-BekFID7GQ01ncXgrfTo_M0K8pnEkFeorclkl26uYVtheQWOdwtzd9QwLZgOFR7L2lMYvo9EUu_NZ4LjA4d0iRHRhKKnqDSHbvvFEOKOcUcHsJASEl3JWmsnuGKc9fQfnQacXcdP_F16JAlTwWy4-_vC9Fl"/>
+</div>
+<div class="flex flex-col overflow-hidden">
+<span class="text-body-md font-semibold text-primary truncate">Operator #402</span>
+<span class="text-label-sm text-secondary">Available</span>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant hover:bg-surface-variant/30 mx-2 rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">inbox</span>
+<span class="text-label-md">Inbox</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 bg-secondary-container text-on-secondary-container mx-2 rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="text-label-md font-semibold">Active Cases</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant hover:bg-surface-variant/30 mx-2 rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">hourglass_empty</span>
+<span class="text-label-md">Queued</span>
+</a>
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant hover:bg-surface-variant/30 mx-2 rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-label-md">Team Analytics</span>
+</a>
+<div class="mt-auto">
+<a class="flex items-center gap-md px-md py-3 text-on-surface-variant hover:bg-surface-variant/30 mx-2 rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-label-md">Settings</span>
+</a>
+</div>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="md:pl-64 pt-16 h-screen flex flex-col bg-surface-bright">
+<!-- Conversation Header Card -->
+<section class="p-gutter border-b border-outline-variant bg-surface flex items-center justify-between shadow-sm z-30">
+<div class="flex items-center gap-md">
+<div class="relative w-12 h-12">
+<img class="w-full h-full rounded-full object-cover border border-outline-variant" data-alt="A close-up portrait of a customer named John Doe for a CRM application. He has a friendly, professional appearance with a neutral background. The lighting is bright and clean, reflecting a professional light-mode UI aesthetic. The overall mood is approachable and trustworthy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSWf2zWfZ4wNvVwrZ_O4FW8IfHfTg5stSTtxYHYYpB3bpldZ8q-z4OjyXeD2UKSn1OH3DFCQ1BPB0W3ezrkXaGuxwn4puhV_UdsB-mFnhToVQF9pqnpkEzOof8SPKzt-O_f7OG9Fpy-p_Ia0P97jqVkuUkVzwjKpfhjLcbAjqj5uEr39POLwZ0eFmtagI7GoGwH2E_VynbvRtP-gHmA-rEUWpt6r9-tWq879c6Mo1IUSS0Pyq10iD2oHIkCst9BmbSdz2PJk8bm7X0"/>
+<div class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-tertiary-container border-2 border-surface rounded-full"></div>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm text-on-surface">John Doe</h1>
+<div class="flex items-center gap-2">
+<span class="bg-tertiary-container/20 text-tertiary px-2 py-0.5 rounded text-label-sm font-label-md uppercase tracking-tighter">Queued</span>
+<span class="text-label-sm text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                            Wait time: 4m
+                        </span>
+</div>
+</div>
+</div>
+<button class="bg-primary hover:bg-primary-container text-on-primary px-lg py-sm rounded-xl font-semibold flex items-center gap-sm transition-all shadow-lg active:scale-95">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">pan_tool</span>
+                Take Over
+            </button>
+</section>
+<!-- Chat History -->
+<section class="flex-1 overflow-y-auto p-gutter space-y-md chat-container bg-[#f8f9ff]">
+<!-- Date Divider -->
+<div class="flex justify-center my-lg">
+<span class="text-label-sm text-outline bg-surface px-3 py-1 rounded-full border border-outline-variant">Today</span>
+</div>
+<!-- User Message -->
+<div class="flex flex-col items-end gap-1">
+<div class="bg-primary text-on-primary px-md py-3 rounded-2xl rounded-tr-xs max-w-[85%] shadow-sm">
+<p class="text-body-md">Hello, I'm having trouble with my subscription renewal. It seems to have failed three times today.</p>
+</div>
+<span class="text-label-sm text-outline mr-1">14:20</span>
+</div>
+<!-- AI Message -->
+<div class="flex flex-col items-start gap-1">
+<div class="flex items-center gap-2 mb-1">
+<div class="w-6 h-6 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px] text-on-secondary-container">smart_toy</span>
+</div>
+<span class="text-label-sm font-bold text-on-surface-variant">AI Assistant</span>
+</div>
+<div class="bg-surface-container-highest text-on-surface px-md py-3 rounded-2xl rounded-tl-xs max-w-[85%] shadow-sm border border-outline-variant">
+<p class="text-body-md">I'm sorry to hear that, John. I can see the failed attempts in your billing history. Usually, this happens due to a block from the issuing bank or an expired card. Would you like me to check the specific error code?</p>
+</div>
+<span class="text-label-sm text-outline ml-1">14:21</span>
+</div>
+<!-- User Message -->
+<div class="flex flex-col items-end gap-1">
+<div class="bg-primary text-on-primary px-md py-3 rounded-2xl rounded-tr-xs max-w-[85%] shadow-sm">
+<p class="text-body-md">Yes please. The card isn't expired, I used it elsewhere this morning.</p>
+</div>
+<span class="text-label-sm text-outline mr-1">14:22</span>
+</div>
+<!-- System Transfer Message -->
+<div class="flex justify-center py-md">
+<div class="bg-tertiary-container/10 border border-tertiary-container/30 px-lg py-md rounded-xl max-w-[90%] flex flex-col items-center text-center gap-2">
+<span class="material-symbols-outlined text-tertiary">transfer_within_a_station</span>
+<p class="text-label-md font-semibold text-tertiary">AI Assistant is handing over the conversation...</p>
+<p class="text-body-sm text-on-surface-variant italic">Reason: Complex billing issue detected. Operator intervention required.</p>
+</div>
+</div>
+<!-- Typing Indicator (Simulated for Operator) -->
+<div class="flex items-center gap-2 opacity-60" id="typing-indicator">
+<div class="flex gap-1">
+<div class="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+<div class="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+<div class="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
+</div>
+<span class="text-label-sm text-primary font-medium">Operator entering...</span>
+</div>
+</section>
+<!-- Footer Input Area -->
+<footer class="p-md bg-surface border-t border-outline-variant space-y-md pb-8 md:pb-md">
+<!-- Quick Responses -->
+<div class="flex gap-sm overflow-x-auto pb-2 no-scrollbar">
+<button class="whitespace-nowrap px-md py-1.5 bg-surface-container border border-outline-variant rounded-full text-label-md text-on-surface-variant hover:bg-surface-variant transition-colors">
+                    Check logs
+                </button>
+<button class="whitespace-nowrap px-md py-1.5 bg-surface-container border border-outline-variant rounded-full text-label-md text-on-surface-variant hover:bg-surface-variant transition-colors">
+                    Request new card
+                </button>
+<button class="whitespace-nowrap px-md py-1.5 bg-surface-container border border-outline-variant rounded-full text-label-md text-on-surface-variant hover:bg-surface-variant transition-colors">
+                    Escalate to Finance
+                </button>
+<button class="whitespace-nowrap px-md py-1.5 bg-surface-container border border-outline-variant rounded-full text-label-md text-on-surface-variant hover:bg-surface-variant transition-colors">
+                    Wait for auth
+                </button>
+</div>
+<!-- Input Box -->
+<div class="flex items-end gap-sm bg-surface-container-low border border-outline-variant rounded-2xl p-base focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all shadow-inner">
+<button class="p-md text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">add_circle</span>
+</button>
+<textarea class="flex-1 bg-transparent border-none focus:ring-0 py-md text-body-md resize-none max-h-32" placeholder="Type a message to John Doe..." rows="1"></textarea>
+<div class="flex items-center gap-xs pr-base pb-base">
+<button class="p-md text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">mood</span>
+</button>
+<button class="bg-primary text-on-primary p-md rounded-xl shadow-md hover:shadow-lg active:scale-95 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+</div>
+</footer>
+</main>
+<!-- Floating Action Button (FAB Override Logic) - Only on Mobile Home/Dashboard, Hidden here for specific task focus -->
+<script>
+        // Micro-interactions for auto-expanding textarea
+        const tx = document.getElementsByTagName("textarea");
+        for (let i = 0; i < tx.length; i++) {
+            tx[i].setAttribute("style", "height:" + (tx[i].scrollHeight) + "px;overflow-y:hidden;");
+            tx[i].addEventListener("input", OnInput, false);
+        }
+
+        function OnInput() {
+            this.style.height = 0;
+            this.style.height = (this.scrollHeight) + "px";
+        }
+
+        // Mock takeover interaction
+        const takeoverBtn = document.querySelector('button.bg-primary');
+        takeoverBtn.addEventListener('click', () => {
+            takeoverBtn.innerHTML = `
+                <span class="material-symbols-outlined animate-spin">sync</span>
+                Connecting...
+            `;
+            setTimeout(() => {
+                takeoverBtn.className = "bg-secondary text-on-secondary px-lg py-sm rounded-xl font-semibold flex items-center gap-sm transition-all shadow-lg";
+                takeoverBtn.innerHTML = `
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                    Connected
+                `;
+                document.getElementById('typing-indicator').classList.add('hidden');
+            }, 1000);
+        });
+    </script>
+</body></html>

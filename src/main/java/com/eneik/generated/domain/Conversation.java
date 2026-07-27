@@ -1,5 +1,6 @@
 package com.eneik.generated.domain;
 
+import com.eneik.generated.entity.TelegramAccount;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 

@@ -1,7 +1,7 @@
 package com.eneik.generated;
 
 import com.eneik.generated.domain.Conversation;
-import com.eneik.generated.domain.TelegramAccount;
+import com.eneik.generated.entity.TelegramAccount;
 import com.eneik.generated.repository.ConversationRepository;
 import com.eneik.generated.repository.TelegramAccountRepository;
 import org.junit.jupiter.api.Test;
@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +34,12 @@ public class DialogueSchemaTest {
     @Test
     public void testSchemaAndIndexUsage() {
         // 1. Arrange - Seed data using repositories with a reproducible seeding mechanism
-        TelegramAccount account1 = new TelegramAccount("acc-001", "+123456789", "agent_tom", "ACTIVE");
-        TelegramAccount account2 = new TelegramAccount("acc-002", "+987654321", "agent_alice", "ACTIVE");
+        TelegramAccount account1 = new TelegramAccount("agent_tom", Instant.now(), "STAGE_1", 85.5);
+        TelegramAccount account2 = new TelegramAccount("agent_alice", Instant.now(), "STAGE_2", 90.0);
 
-        accountRepository.save(account1);
-        accountRepository.save(account2);
+        // Capture the persisted entities with generated IDs
+        account1 = accountRepository.save(account1);
+        account2 = accountRepository.save(account2);
 
         LocalDateTime now = LocalDateTime.of(2026, 7, 27, 20, 13, 42);
 
@@ -78,6 +80,7 @@ public class DialogueSchemaTest {
         Map<String, Object> latestRow = viewRows.get(0);
         assertThat(latestRow.get("CONVERSATION_ID")).isEqualTo("conv-2003");
         assertThat(latestRow.get("LEAD_USERNAME")).isEqualTo("lead_2003");
+        assertThat(latestRow.get("ACCOUNT_SESSION_NAME")).isIn("agent_tom", "agent_alice");
 
         // 4. Act & Assert - Run EXPLAIN to verify the index is used on status filter queries with thousands of records
         // H2 "EXPLAIN" output contains the execution plan description which mentions the index name if used.

@@ -5,4 +5,3 @@
 DROP VIEW IF EXISTS unified_inbox_view;
 DROP INDEX IF EXISTS idx_conv_status_updated_at;
 DROP TABLE IF EXISTS conversations;
-DROP TABLE IF EXISTS telegram_accounts;
