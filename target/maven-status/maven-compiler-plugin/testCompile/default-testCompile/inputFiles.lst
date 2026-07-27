@@ -1,0 +1,4 @@
+/app/src/test/java/com/eneik/generated/DatabaseSchemaIntegrationTest.java
+/app/src/test/java/com/eneik/generated/DialogueHistoryTest.java
+/app/src/test/java/com/eneik/generated/campaign/CampaignDataModelTest.java
+/app/src/test/java/com/eneik/generated/service/WarmupServiceTest.java

@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@theme {
+  --color-surface-tint: #b42900;
+  --color-secondary-container: #42b3ff;
+  --color-error: #ba1a1a;
+  --color-surface-container: #e6eeff;
+  --color-on-surface: #121c2a;
+  --color-secondary: #006496;
+  --color-surface-container-highest: #d9e3f6;
+  --color-tertiary: #5a5b6b;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #eff4ff;
+  --color-primary: #af2800;
+  --color-background: #f8f9ff;
+  --color-inverse-primary: #ffb4a2;
+  --color-outline: #926f66;
+  --color-tertiary-container: #737384;
+  --color-surface-bright: #f8f9ff;
+  --color-surface-container-high: #dee9fc;
+  --color-primary-container: #db3400;
+  --color-on-primary-container: #fffbff;
+  --color-on-primary: #ffffff;
+  --color-primary-fixed: #ffdad2;
+  --color-outline-variant: #e7bdb3;
+  --color-on-surface-variant: #5d3f38;
+
+  --spacing-margin-desktop: 32px;
+  --spacing-margin-mobile: 16px;
+  --spacing-gutter: 16px;
+  --spacing-base: 4px;
+  --spacing-container-max: 1440px;
+
+  --font-mono-sm: "Geist";
+  --font-headline-lg-mobile: "Geist";
+  --font-body-lg: "Inter";
+  --font-headline-md: "Geist";
+  --font-body-md: "Inter";
+  --font-headline-lg: "Geist";
+  --font-display-lg: "Geist";
+  --font-headline-sm: "Geist";
+  --font-label-md: "Geist";
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f8f9ff; /* background */
+  color: #121c2a; /* on-surface */
+}
+
+.font-geist {
+  font-family: 'Geist', sans-serif;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+}
+
+.spintax-token {
+  background: rgba(175, 40, 0, 0.1);
+  color: #af2800;
+  padding: 0 4px;
+  border-radius: 4px;
+  border: 1px solid rgba(175, 40, 0, 0.2);
+}
+
+.bento-card {
+  background: #ffffff;
+  border: 1px solid #e7bdb3; /* outline-variant */
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bento-card:hover {
+  border-color: #af2800; /* primary */
+  transform: translateY(-2px);
+}
