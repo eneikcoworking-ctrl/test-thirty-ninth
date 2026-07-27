@@ -256,7 +256,7 @@
         // Character Counter Logic
         const textarea = document.getElementById('systemPrompt');
         const charCount = document.getElementById('charCount');
-
+        
         textarea.addEventListener('input', () => {
             charCount.textContent = textarea.value.length;
             if (textarea.value.length > 1800) {
