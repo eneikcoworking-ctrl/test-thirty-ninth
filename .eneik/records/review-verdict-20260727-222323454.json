@@ -1,4 +1,0 @@
-{"verdicts": [
-  {"sourceIndex": 0, "verdict": "block", "criticalReason": "Commits files under the .eneik/ directory (.eneik/records/), which directly contradicts the explicitly stated boundaries in the Definition of Done.", "concerns": []},
-  {"sourceIndex": 1, "verdict": "approve", "criticalReason": "", "concerns": []}
-]}
