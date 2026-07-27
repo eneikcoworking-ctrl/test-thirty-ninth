@@ -1,0 +1,83 @@
+{
+  "epics": [
+    {
+      "existingEpicId": null,
+      "title": "AI-Powered Telegram LeadGen Platform",
+      "jtbd": "When a marketing team needs to engage prospects on Telegram, I want an AI-powered automation platform, so that we can qualify and manage leads with minimal manual effort.",
+      "kanoClass": "Performance",
+      "cynefinDomain": "complex",
+      "sixSigmaMetric": "Increase automated lead qualification rate from 0% to >70%",
+      "tocConstraintRef": "Manual prospect identification and outreach bottlenecks",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Integrate with Telegram API to support receiving webhooks and sending automated messages.",
+        "R2: Evaluate and qualify incoming lead messages using an AI/LLM service.",
+        "R3: Persist campaign configurations, lead profiles, and conversation histories in a structured database.",
+        "R4: Provide an API for platform configuration and campaign management."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Platform Architecture Decision Record",
+          "roleTag": "BARCAN-TAG-01",
+          "jtbd": "When implementing the architecture for this epic, I want to define system boundaries and component interactions, so that the AI lead qualification platform can be reliably built without design ambiguities.",
+          "acceptanceCriteria": "Given the ambiguous requirements, When the spike is complete, Then a markdown Architecture Decision Record (ADR) is committed.\nGiven the need for AI and Telegram integration, When writing the ADR, Then data flow between components is fully specified.",
+          "leanValue": "essential",
+          "cynefinDomain": "complex",
+          "tocConstraintRef": "Lack of system design clarity",
+          "sixSigmaMetric": "100% of defined components have documented responsibilities",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R2",
+            "R3",
+            "R4"
+          ]
+        },
+        {
+          "title": "Platform Data Schema Initialization",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When implementing the database model for this epic, I want to define tables for campaigns, leads, and messages, so that structured data persistence supports the automated qualification workflow.",
+          "acceptanceCriteria": "Given the data persistence requirement, When writing migrations, Then tables for leads, campaigns, and messages are created.\nGiven the need for query performance, When defining the schema, Then primary and foreign keys are explicitly indexed.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "Missing structured data model",
+          "sixSigmaMetric": "Zero missing schema elements required by core services",
+          "hasUi": false,
+          "requirementRefs": [
+            "R3"
+          ]
+        },
+        {
+          "title": "Telegram Bot & Platform API Implementation",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the backend for this epic, I want to expose endpoints for Telegram webhooks and campaign management, so that external platforms and marketing teams can interact with the automated system.",
+          "acceptanceCriteria": "Given a valid Telegram webhook payload, When the API receives it, Then it successfully validates and queues the message.\nGiven a REST client request to manage campaigns, When the API is called, Then it securely performs the requested CRUD operation.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Absence of integration endpoints",
+          "sixSigmaMetric": "<200ms latency for processing incoming API requests",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1",
+            "R4"
+          ]
+        },
+        {
+          "title": "AI Lead Qualification Service",
+          "roleTag": "BARCAN-TAG-04",
+          "jtbd": "When implementing the AI module for this epic, I want to wrap LLM interactions into a dedicated qualification service, so that incoming prospect messages can be evaluated autonomously and efficiently.",
+          "acceptanceCriteria": "Given a raw prospect message, When the AI service processes it, Then it extracts relevant lead qualification metadata.\nGiven an unqualified lead state, When analyzed by the model, Then the system securely logs the reasoning for rejection.",
+          "leanValue": "valuable",
+          "cynefinDomain": "complex",
+          "tocConstraintRef": "Manual message evaluation bottleneck",
+          "sixSigmaMetric": ">85% accuracy in lead qualification vs human baseline",
+          "hasUi": false,
+          "requirementRefs": [
+            "R2"
+          ]
+        }
+      ]
+    }
+  ]
+}
