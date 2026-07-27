@@ -150,6 +150,7 @@
     await saveFullConfig();
   }
 
+  // Add stop trigger
   function addTrigger() {
     const trimmed = triggerInput.trim();
     if (trimmed && !stopTriggers.some(t => t.keyword === trimmed)) {
@@ -159,11 +160,13 @@
     }
   }
 
+  // Remove stop trigger
   function removeTrigger(keyword: string) {
     stopTriggers = stopTriggers.filter(t => t.keyword !== keyword);
     saveStopTriggers(stopTriggers);
   }
 
+  // Handle trigger keydown
   function handleTriggerKeydown(event: KeyboardEvent) {
     if (event.key === 'Enter') {
       event.preventDefault();
@@ -665,7 +668,7 @@
             <div class="mt-1">
               <span class="text-3xl font-bold">99.98%</span>
               <div class="w-full bg-white/10 h-1 rounded-full mt-2 overflow-hidden">
-                <div class="bg-emerald-400 h-full w-[99%]"></div>
+                <div class="bg-[#68d3ff] h-full w-[99%]"></div>
               </div>
             </div>
             <div class="mt-auto pt-4 flex justify-between border-t border-white/10">
