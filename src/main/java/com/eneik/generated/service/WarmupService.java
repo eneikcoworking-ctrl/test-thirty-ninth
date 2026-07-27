@@ -104,4 +104,28 @@ public class WarmupService {
     public Optional<TelegramAccount> getAccountBySessionName(String sessionName) {
         return accountRepository.findBySessionName(sessionName);
     }
+
+    public double calculateNextActionDelay(double lambda, java.util.Random random) {
+        if (lambda <= 0) {
+            throw new IllegalArgumentException("Lambda must be positive");
+        }
+        java.util.Random rnd = random != null ? random : new java.util.Random();
+        return -Math.log(1.0 - rnd.nextDouble()) / lambda;
+    }
+
+    @Transactional
+    public TelegramAccount assignToOutreach(Long accountId) {
+        TelegramAccount account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Account not found: " + accountId));
+
+        Instant now = clock.instant();
+        Instant cutoff = now.minus(java.time.Duration.ofDays(30));
+
+        if (account.getCreationDate().isAfter(cutoff)) {
+            throw new IllegalStateException("Account is under 30 days old and cannot be assigned to outreach");
+        }
+
+        account.setWarmupStage("OUTREACH");
+        return accountRepository.save(account);
+    }
 }
