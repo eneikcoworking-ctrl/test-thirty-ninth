@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Campaign Manager Dashboard</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Hanken+Grotesk:wght@600;700;800&amp;family=Geist:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-low": "#f6f2f7",
+                      "outline": "#926f66",
+                      "on-secondary": "#ffffff",
+                      "surface-container": "#f0edf1",
+                      "on-surface-variant": "#5d3f38",
+                      "on-primary": "#ffffff",
+                      "on-background": "#1b1b1e",
+                      "primary": "#af2800",
+                      "primary-fixed": "#ffdad2",
+                      "error-container": "#ffdad6",
+                      "on-secondary-fixed-variant": "#004b72",
+                      "error": "#ba1a1a",
+                      "on-primary-fixed-variant": "#891d00",
+                      "background": "#fbf8fc",
+                      "on-tertiary-fixed-variant": "#454555",
+                      "surface-variant": "#e4e1e6",
+                      "on-secondary-container": "#004367",
+                      "on-tertiary": "#ffffff",
+                      "surface-dim": "#dcd9dd",
+                      "outline-variant": "#e7bdb3",
+                      "on-surface": "#1b1b1e",
+                      "secondary-fixed": "#cce5ff",
+                      "surface-container-highest": "#e4e1e6",
+                      "on-primary-fixed": "#3c0700",
+                      "inverse-surface": "#303033",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-fixed-dim": "#c6c5d8",
+                      "surface-tint": "#b42900",
+                      "primary-fixed-dim": "#ffb4a2",
+                      "surface": "#fbf8fc",
+                      "primary-container": "#db3400",
+                      "secondary": "#006496",
+                      "surface-container-high": "#eae7eb",
+                      "on-secondary-fixed": "#001e31",
+                      "on-tertiary-fixed": "#1a1a28",
+                      "on-error-container": "#93000a",
+                      "secondary-fixed-dim": "#91ccff",
+                      "inverse-primary": "#ffb4a2",
+                      "on-primary-container": "#fffbff",
+                      "surface-bright": "#fbf8fc",
+                      "on-tertiary-container": "#fffbff",
+                      "tertiary-container": "#737384",
+                      "tertiary": "#5a5b6b",
+                      "tertiary-fixed": "#e2e0f5",
+                      "inverse-on-surface": "#f3f0f4",
+                      "secondary-container": "#42b3ff",
+                      "on-error": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "xl": "40px",
+                      "base": "4px",
+                      "sm": "8px",
+                      "margin-desktop": "32px",
+                      "md": "16px",
+                      "xs": "4px",
+                      "lg": "24px",
+                      "margin-mobile": "16px",
+                      "gutter": "20px"
+              },
+              "fontFamily": {
+                      "body-lg": ["Inter"],
+                      "code-sm": ["Geist"],
+                      "headline-md": ["Hanken Grotesk"],
+                      "headline-lg": ["Hanken Grotesk"],
+                      "body-md": ["Inter"],
+                      "label-md": ["Geist"],
+                      "headline-lg-mobile": ["Hanken Grotesk"],
+                      "headline-sm": ["Hanken Grotesk"]
+              },
+              "fontSize": {
+                      "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                      "code-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }],
+                      "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                      "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                      "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                      "label-md": ["13px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                      "headline-lg-mobile": ["26px", { "lineHeight": "32px", "fontWeight": "700" }],
+                      "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scrolling-hide::-webkit-scrollbar { display: none; }
+        .scrolling-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Specialized Svelte-inspired Micro-interactions */
+        .card-hover:hover {
+            transform: translateY(-2px);
+            border-color: #af2800;
+        }
+        .geist-font { font-family: 'Geist', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md min-h-screen pb-20">
+<!-- TopAppBar (From JSON) -->
+<header class="bg-surface border-b border-outline-variant fixed top-0 w-full z-50 h-16 flex justify-between items-center px-margin-mobile">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional, clean-cut executive profile portrait in high-resolution, featuring a neutral background and warm, natural studio lighting. The aesthetic is modern SaaS corporate, with a focus on crisp details and a palette of soft whites and cool grays that align with a minimalist business dashboard environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmiV30z0aFJ8Ezvshd3qbIwHxeLC58t0I_X4zzKUJyei3IVPk2E_iPOutiqw4P0r1EojeEvEtXIWxPpwQXJlnwJWDcrsZ9xeCeOCB4zvT4GyoNdEwmEI7TajUXNW6lzJtUD20Y096uCg_GtJ89y-9RGT0Roh70MZCkXcmOvP2JzMgydN1HhaEtdJphOQLLngAtC6yMBnFgxSGsD9aECyphBZTN6VSXo6X5HujJsygUiwsVhJFhIWOKZ8IR_yQBJosfQz0XQxgh4Qea"/>
+</div>
+<h1 class="text-headline-sm-mobile font-headline-sm-mobile font-bold text-primary">Campaign Manager</h1>
+</div>
+<button class="hover:bg-surface-container-low transition-colors p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary" data-icon="sensors">sensors</span>
+</button>
+</header>
+<main class="pt-20 px-margin-mobile max-w-7xl mx-auto">
+<!-- Dashboard Greeting -->
+<section class="mb-lg">
+<h2 class="text-headline-md font-headline-md text-on-surface">Overview</h2>
+<p class="text-body-md text-on-surface-variant">Real-time performance across all active vectors.</p>
+</section>
+<!-- Metrics Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-md mb-xl">
+<!-- Active Campaigns -->
+<div class="bg-surface-container-lowest border border-outline-variant p-md flex flex-col justify-between transition-all duration-200 card-hover">
+<div class="flex justify-between items-start">
+<span class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Active Campaigns</span>
+<span class="material-symbols-outlined text-primary" data-icon="rocket_launch">rocket_launch</span>
+</div>
+<div class="mt-lg">
+<p class="text-headline-lg font-headline-lg text-primary">12</p>
+<div class="flex items-center gap-xs mt-xs">
+<span class="text-code-sm font-code-sm text-on-secondary-container bg-secondary-container px-2 py-0.5 rounded-full">+2 from last week</span>
+</div>
+</div>
+</div>
+<!-- Total Leads -->
+<div class="bg-surface-container-lowest border border-outline-variant p-md flex flex-col justify-between transition-all duration-200 card-hover">
+<div class="flex justify-between items-start">
+<span class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Total Leads</span>
+<span class="material-symbols-outlined text-primary" data-icon="group">group</span>
+</div>
+<div class="mt-lg">
+<p class="text-headline-lg font-headline-lg text-on-surface">1,842</p>
+<div class="flex items-center gap-xs mt-xs">
+<span class="text-code-sm font-code-sm text-on-surface-variant">Last 30 days</span>
+</div>
+</div>
+</div>
+<!-- Conversion Rate -->
+<div class="bg-surface-container-lowest border border-outline-variant p-md flex flex-col justify-between transition-all duration-200 card-hover">
+<div class="flex justify-between items-start">
+<span class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Conversion Rate</span>
+<span class="material-symbols-outlined text-primary" data-icon="trending_up">trending_up</span>
+</div>
+<div class="mt-lg">
+<p class="text-headline-lg font-headline-lg text-on-surface">4.2%</p>
+<!-- Progress Bar -->
+<div class="w-full bg-outline-variant h-1.5 mt-sm rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[42%]"></div>
+</div>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-xl">
+<!-- Quick Launch Section (Left 7 Columns) -->
+<section class="lg:col-span-7">
+<div class="flex items-center justify-between mb-md">
+<h3 class="text-headline-sm font-headline-sm">Quick Launch</h3>
+<button class="text-label-md font-label-md text-primary font-bold hover:underline">View All Templates</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Template Card 1 -->
+<div class="relative group bg-surface border border-outline-variant overflow-hidden cursor-pointer">
+<div class="aspect-video bg-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="A minimalist, futuristic technology abstract featuring clean diagonal lines and a sophisticated color scheme of deep charcoal and vibrant primary orange. The lighting is sharp and architectural, suggesting a high-performance software environment with a svelte, reactive design language." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqIIl-778vD3fjJosmp5szrbBZUHvWfUkzECM69aDGnu-8yB9DXTB5SDh8mEDwzdDWp3AsrCA8S3p-oYBET650mRAGepPtJNgkx0ZxokA9f_wjR3utZ1WfcwHr05yp9gpX3QGDi8w_KhGnhGCH0kMYbpNvfcWNUP5GIDLgdNhFe5PNwohThz1U7WkyuN6uM-d8AInKe81Cqrh7Era7q8Ui-DazZeM1CeOGRmHkbYYZwCE3wpH2NkLTe2fv0ooMa--Rur-pZvlPt9fz"/>
+</div>
+<div class="p-md bg-surface-container-lowest">
+<p class="text-label-md font-label-md text-primary mb-1">E-MAIL AUTOMATION</p>
+<h4 class="text-body-lg font-bold">Inbound Nurture Flow</h4>
+<p class="text-body-md text-on-surface-variant mt-sm">Start a high-conversion nurture sequence for new leads.</p>
+</div>
+</div>
+<!-- Template Card 2 -->
+<div class="relative group bg-surface border border-outline-variant overflow-hidden cursor-pointer">
+<div class="aspect-video bg-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="A clean, minimalist composition of digital interface elements floating in a bright, airy white space. The image features thin lines, subtle dots, and accents of primary orange #FF3E00. The lighting is diffused and even, creating a sense of professional clarity and modern software design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCasgbU01oEwW4A0z7kmg47zJJOGjT2PmdHxd8n5akFseIre0JEVv9jlm2oWSkBktMjVpJgscFUDd1csuRrDFk6Bp-UGbADb5UUKACJrMBBCUp1lUQ9iMHLQTootG266h4ygu6LvbYx4IsghqTTEtfHl_s7fa3PYKNmTFoGTSyapowOyMZV0xx9bSwFveZzeCm03sjd-86_FwmIUHeh2nH2zi6eNBErsbQke4dIRVRsS3Iw9v5DcWxfz9_ejC5Hzooh6_Dq1e7NfzVt"/>
+</div>
+<div class="p-md bg-surface-container-lowest">
+<p class="text-label-md font-label-md text-primary mb-1">AD CAMPAIGN</p>
+<h4 class="text-body-lg font-bold">Social Retargeting</h4>
+<p class="text-body-md text-on-surface-variant mt-sm">Re-engage visitors who didn't convert on the first visit.</p>
+</div>
+</div>
+</div>
+<!-- Spintax Preview Section -->
+<div class="mt-xl p-md bg-surface-container-low border border-outline-variant">
+<h4 class="text-label-md font-label-md text-on-surface-variant uppercase mb-sm">Message Spintax Preview</h4>
+<div class="bg-surface-container-lowest p-md border border-outline-variant font-label-md text-on-surface">
+<p class="font-code-sm text-body-md">
+                            {Hi|Hello|Hey} <span class="text-primary font-bold">{first_name}</span>, I saw your <span class="text-primary font-bold">{company}</span> website and {loved|really liked} the {layout|design}. {Are you|Would you be} open to a {chat|brief call}?
+                        </p>
+</div>
+</div>
+</section>
+<!-- Recent Activity Section (Right 5 Columns) -->
+<aside class="lg:col-span-5">
+<h3 class="text-headline-sm font-headline-sm mb-md">Recent Activity</h3>
+<div class="space-y-base">
+<!-- Activity Item 1 -->
+<div class="flex items-start gap-md p-md border-b border-outline-variant hover:bg-surface-container-low transition-colors">
+<div class="w-10 h-10 rounded bg-primary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary" data-icon="mail">mail</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-body-md font-bold truncate">Lead "Alex Riviera" replied</p>
+<p class="text-body-md text-on-surface-variant italic">"Let's jump on a call tomorrow at 10 AM..."</p>
+<p class="text-code-sm text-outline mt-sm">2 minutes ago</p>
+</div>
+<div class="flex items-center">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</div>
+</div>
+<!-- Activity Item 2 -->
+<div class="flex items-start gap-md p-md border-b border-outline-variant hover:bg-surface-container-low transition-colors">
+<div class="w-10 h-10 rounded bg-secondary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary" data-icon="check_circle">check_circle</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-body-md font-bold truncate">Campaign "SaaS Winter" Completed</p>
+<p class="text-body-md text-on-surface-variant">Reached 1,200 recipients with 4% conversion.</p>
+<p class="text-code-sm text-outline mt-sm">1 hour ago</p>
+</div>
+</div>
+<!-- Activity Item 3 -->
+<div class="flex items-start gap-md p-md border-b border-outline-variant hover:bg-surface-container-low transition-colors">
+<div class="w-10 h-10 rounded bg-surface-container-highest flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="person_add">person_add</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-body-md font-bold truncate">New Lead Source Integrated</p>
+<p class="text-body-md text-on-surface-variant">Apollo.io data sync is now active.</p>
+<p class="text-code-sm text-outline mt-sm">3 hours ago</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-md py-sm border border-outline-variant text-label-md font-bold hover:bg-surface-container-low transition-colors">
+                    LOAD MORE ACTIVITY
+                </button>
+</aside>
+</div>
+</main>
+<!-- BottomNavBar (From JSON) -->
+<!-- active_navigation applied to "Dashboard" -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-surface border-t border-outline-variant py-2 px-margin-mobile pb-safe">
+<a class="flex flex-col items-center justify-center text-primary font-bold transition-transform duration-150 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-label-md font-label-md">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-transform duration-150 active:scale-90 px-2 py-1 rounded" href="#">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+<span class="text-label-md font-label-md">Campaigns</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-transform duration-150 active:scale-90 px-2 py-1 rounded" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="text-label-md font-label-md">Leads</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-transform duration-150 active:scale-90 px-2 py-1 rounded" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-label-md font-label-md">Settings</span>
+</a>
+</nav>
+<!-- Micro-interaction Script -->
+<script>
+        document.querySelectorAll('.card-hover').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.style.transform = 'scale(0.98)';
+            });
+            card.addEventListener('mouseup', () => {
+                card.style.transform = 'translateY(-2px)';
+            });
+        });
+    </script>
+</body></html>
