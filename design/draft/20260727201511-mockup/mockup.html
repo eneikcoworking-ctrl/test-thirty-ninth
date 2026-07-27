@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Operator Console - Conversation Takeover</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed-variant": "#3323cc",
+                    "inverse-surface": "#2a313d",
+                    "surface-container-low": "#f0f3ff",
+                    "secondary-fixed": "#6ffbbe",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#ffd4a4",
+                    "on-tertiary": "#ffffff",
+                    "on-surface": "#151c27",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed-dim": "#c3c0ff",
+                    "primary-fixed": "#e2dfff",
+                    "inverse-primary": "#c3c0ff",
+                    "on-secondary-container": "#00714d",
+                    "tertiary-fixed-dim": "#ffb95f",
+                    "primary": "#3525cd",
+                    "on-primary-fixed": "#0f0069",
+                    "outline": "#777587",
+                    "on-surface-variant": "#464555",
+                    "surface": "#f9f9ff",
+                    "on-error-container": "#93000a",
+                    "inverse-on-surface": "#ebf1ff",
+                    "on-secondary-fixed": "#002113",
+                    "on-tertiary-fixed": "#2a1700",
+                    "secondary-container": "#6cf8bb",
+                    "on-secondary-fixed-variant": "#005236",
+                    "surface-variant": "#dce2f3",
+                    "secondary": "#006c49",
+                    "secondary-fixed-dim": "#4edea3",
+                    "tertiary-container": "#885500",
+                    "surface-container": "#e7eefe",
+                    "on-primary-container": "#dad7ff",
+                    "surface-bright": "#f9f9ff",
+                    "primary-container": "#4f46e5",
+                    "background": "#f9f9ff",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "surface-tint": "#4d44e3",
+                    "error": "#ba1a1a",
+                    "on-background": "#151c27",
+                    "outline-variant": "#c7c4d8",
+                    "surface-container-high": "#e2e8f8",
+                    "surface-container-highest": "#dce2f3",
+                    "surface-dim": "#d3daea",
+                    "on-primary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed": "#ffddb8",
+                    "on-secondary": "#ffffff",
+                    "tertiary": "#684000"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "stack-sm": "8px",
+                    "unit": "4px",
+                    "stack-md": "16px",
+                    "container-padding": "24px",
+                    "stack-lg": "32px"
+            },
+            "fontFamily": {
+                    "body-sm": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-sm": ["Inter"],
+                    "label-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .chat-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .chat-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .chat-scroll::-webkit-scrollbar-thumb {
+            background: #e5e7eb;
+            border-radius: 10px;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .takeover-banner-enter {
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface dark:bg-inverse-surface border-b border-outline-variant dark:border-outline shadow-sm flex justify-between items-center px-container-padding h-16">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a friendly female customer named Sarah Jenkins, looking directly at the camera with a subtle smile. High-end corporate photography style with soft bokeh background and warm, natural lighting. The color palette is clean, professional, and sophisticated, reflecting a modern light-mode interface design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnDXfHZde9TQzgw4DWUFeAp3WrnVLNA40rW6CDCLMUmndOj_BRWNQCcK03akzclDueqJkbaMslDw6QJuQIWBlVXgSJOT2tv79IveAoRsIgv9COQl9ZvzHzv7QNi02jRM8Dw0vYi9TzEaCsNNJSHAZkTkZcfQCKMhn4ZXSH_ccRHdupzHExuDIEw-QdlgPN6p6BP24RaFsmNLwUkxx6ef9_v3MnOlJQBRIln83rF76XEodDsP4zHStmOJx8rLs-Z4mpvmpfeRSApyU"/>
+</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm text-on-surface leading-tight">Sarah Jenkins</h1>
+<div class="flex items-center gap-unit">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Active 2m ago</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-stack-md">
+<span class="bg-error-container text-on-error-container px-3 py-1 rounded-full font-label-md text-label-md flex items-center gap-unit">
+<span class="material-symbols-outlined text-[18px]">priority_high</span>
+                Urgent
+            </span>
+<button class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:bg-surface-container-high p-2 rounded-full transition-colors" data-icon="search">search</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex flex-col h-screen pt-16 pb-[160px] md:pb-[140px] md:pl-64">
+<!-- Chat History Scroll Area -->
+<div class="flex-1 overflow-y-auto chat-scroll px-container-padding py-stack-lg space-y-stack-lg">
+<!-- Timestamp Divider -->
+<div class="flex justify-center my-stack-md">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-4 py-1 rounded-full">Today, 2:45 PM</span>
+</div>
+<!-- Operator Message -->
+<div class="flex justify-end mb-4">
+<div class="max-w-[80%]">
+<div class="bg-primary-container text-on-primary text-body-md font-body-md p-stack-md rounded-xl rounded-tr-none shadow-sm">
+                        Hello Sarah, I've seen your inquiry about the enterprise account upgrade. How can I help?
+                    </div>
+<div class="flex justify-end mt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">2:46 PM • Read</span>
+</div>
+</div>
+</div>
+<!-- Customer Message -->
+<div class="flex justify-start mb-4">
+<div class="max-w-[80%] flex gap-stack-sm">
+<div class="flex flex-col">
+<div class="bg-surface-container-highest text-on-surface text-body-md font-body-md p-stack-md rounded-xl rounded-tl-none border border-outline-variant">
+                            Hi, I'm trying to process the payment but the system keeps throwing a 402 error. This is critical as our trial ends in 2 hours.
+                        </div>
+<div class="mt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">2:48 PM</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Customer Urgent Message -->
+<div class="flex justify-start mb-4">
+<div class="max-w-[80%] flex gap-stack-sm">
+<div class="flex flex-col relative pl-4 border-l-4 border-error">
+<div class="bg-surface-container-highest text-on-surface text-body-md font-body-md p-stack-md rounded-xl rounded-tl-none border border-outline-variant">
+                            It also says "Unauthorized" now. Please can someone help urgently? We have 40 seats waiting to be onboarded.
+                        </div>
+<div class="mt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">2:49 PM</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bot / Automated Response -->
+<div class="flex justify-center my-stack-lg">
+<div class="flex items-center gap-stack-sm bg-surface-container-low border border-outline-variant px-stack-md py-stack-sm rounded-lg">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant" data-icon="smart_toy">smart_toy</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant italic">AI Assistant is analyzing the error logs...</span>
+</div>
+</div>
+</div>
+<!-- Sticky Floating Takeover Banner -->
+<div class="fixed bottom-[88px] left-0 md:left-64 right-0 z-40 px-container-padding takeover-banner-enter">
+<div class="glass-panel border border-primary/20 rounded-xl p-stack-md shadow-xl flex items-center justify-between gap-stack-md ring-1 ring-primary/5">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person_pin</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Bot is handling this chat</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">High complexity detected. Recommend manual intervention.</p>
+</div>
+</div>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-6 py-stack-md rounded-lg shadow-md hover:bg-primary/90 transition-all active:scale-95 whitespace-nowrap">
+                    Take Over Chat
+                </button>
+</div>
+</div>
+<!-- Chat Input Area -->
+<footer class="fixed bottom-0 left-0 md:left-64 right-0 bg-surface border-t border-outline-variant p-stack-md h-[88px] flex items-center gap-stack-md z-50">
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+<div class="flex-1 bg-surface-container-lowest border border-outline-variant rounded-full px-stack-md h-12 flex items-center focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+<input class="bg-transparent border-none focus:ring-0 w-full text-body-md font-body-md text-on-surface" disabled="" placeholder="Type a message..." type="text"/>
+<button class="text-on-surface-variant opacity-50 cursor-not-allowed">
+<span class="material-symbols-outlined" data-icon="emoji_emotions">emoji_emotions</span>
+</button>
+</div>
+<button class="w-12 h-12 rounded-full bg-primary-container/20 text-primary-container flex items-center justify-center opacity-50 cursor-not-allowed">
+<span class="material-symbols-outlined" data-icon="send" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</footer>
+</main>
+<!-- Navigation Drawer (Desktop only sidebar) -->
+<aside class="hidden md:flex flex-col fixed left-0 top-0 h-screen w-64 bg-surface border-r border-outline-variant z-40 py-stack-lg">
+<div class="px-container-padding mb-stack-lg">
+<h2 class="font-headline-sm text-headline-sm font-bold text-primary">Operator Console</h2>
+</div>
+<div class="px-stack-md mb-stack-lg">
+<div class="flex items-center gap-stack-sm p-stack-sm rounded-lg bg-surface-container-high">
+<div class="w-10 h-10 rounded-lg overflow-hidden bg-outline">
+<img class="w-full h-full object-cover" data-alt="A clean, minimalist headshot of a young professional operator with glasses, Alex Rivers, looking at a computer screen in a brightly lit modern office. Cinematic shallow depth of field, cool blue and soft grey tones to match the corporate CRM aesthetic. High quality professional lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJtaYuYsqDf4I3Cg-p1W7DH7N4HY76TF7b9zUSjXiaM6rYnblSNPH1G9UDBk844sTVJem05Mf3p9_Y_UPH9JdPlLM07QsTAZh3CDi2RYfz7_4IBC2M7yHLARS2VWO-Sk4IeTsovyVUnbDMH0HcQLItOI2GOWta5TmmhUMlTLbJQ-83nP8Jx0zOxeIG_MsWo6knpc413nnwZgfpUb22i3CiRokqxSv-Muq7PMHr7iGm2k7haTcn6N3yHFvDwwZsSo1QoEomdOhnDGo"/>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Alex Rivers</p>
+<p class="text-[10px] uppercase tracking-wider font-bold text-secondary">Online</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-unit">
+<a class="flex items-center gap-stack-md py-stack-md px-container-padding mx-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-label-md text-label-md">All Chats</span>
+</a>
+<a class="flex items-center gap-stack-md py-stack-md px-container-padding mx-2 bg-primary-container text-on-primary rounded-lg shadow-sm" href="#">
+<span class="material-symbols-outlined" data-icon="person_pin" style="font-variation-settings: 'FILL' 1;">person_pin</span>
+<span class="font-label-md text-label-md">My Chats</span>
+</a>
+<a class="flex items-center gap-stack-md py-stack-md px-container-padding mx-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="task_alt">task_alt</span>
+<span class="font-label-md text-label-md">Resolved</span>
+</a>
+</nav>
+<div class="px-container-padding mt-auto pt-stack-lg">
+<div class="p-stack-md rounded-xl bg-surface-container-lowest border border-outline-variant">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-unit">Current Shift</p>
+<p class="font-body-sm text-body-sm font-bold text-on-surface">06:42:15</p>
+</div>
+</div>
+</aside>
+<script>
+        // Simple Interaction logic
+        const takeoverBtn = document.querySelector('button.bg-primary');
+        const chatInput = document.querySelector('input');
+        const footerSend = document.querySelector('footer button.bg-primary-container\\/20');
+        const footerInputGroup = document.querySelector('footer .flex-1');
+        const banner = document.querySelector('.takeover-banner-enter');
+
+        takeoverBtn.addEventListener('click', () => {
+            // UI Feedback
+            takeoverBtn.innerHTML = 'Taking Over...';
+            takeoverBtn.classList.add('animate-pulse');
+            
+            setTimeout(() => {
+                // Enable Input
+                chatInput.disabled = false;
+                chatInput.focus();
+                
+                // Update Footer styling
+                footerSend.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-primary-container/20', 'text-primary-container');
+                footerSend.classList.add('bg-primary', 'text-on-primary', 'shadow-md', 'active:scale-95');
+                footerInputGroup.classList.remove('opacity-50');
+                
+                // Remove Banner with animation
+                banner.style.transition = 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+                banner.style.transform = 'translateY(150%)';
+                banner.style.opacity = '0';
+                
+                setTimeout(() => {
+                    banner.remove();
+                }, 400);
+            }, 800);
+        });
+
+        // Responsive touch feedbacks
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('touchstart', () => btn.classList.add('opacity-70'));
+            btn.addEventListener('touchend', () => btn.classList.remove('opacity-70'));
+        });
+    </script>
+</body></html>
