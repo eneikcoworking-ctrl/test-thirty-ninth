@@ -24,6 +24,12 @@ public class TGAccount {
     @JoinColumn(name = "proxy_id", unique = true)
     private Proxy proxy;
 
+    @Column(name = "session_data")
+    private String sessionData;
+
+    @Column(name = "session_type")
+    private String sessionType;
+
     public TGAccount() {}
 
     public TGAccount(String phoneNumber, String status) {
@@ -33,6 +39,22 @@ public class TGAccount {
 
     public Long getId() {
         return id;
+    }
+
+    public String getSessionData() {
+        return sessionData;
+    }
+
+    public void setSessionData(String sessionData) {
+        this.sessionData = sessionData;
+    }
+
+    public String getSessionType() {
+        return sessionType;
+    }
+
+    public void setSessionType(String sessionType) {
+        this.sessionType = sessionType;
     }
 
     public void setId(Long id) {
