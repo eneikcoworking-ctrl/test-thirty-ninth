@@ -1,0 +1,298 @@
+openapi: 3.0.3
+info:
+  title: AI Configuration API Contract
+  description: |
+    Shared API contract for managing system prompts (persona) and stop-trigger/intent rules.
+    This contract aligns the frontend (BARCAN-TAG-11) and backend (BARCAN-TAG-02) teams,
+    ensuring they can develop in parallel against a robust, stable specification.
+
+    Philosophical Alignment (BARCAN-TAG-12):
+    - Дэвид Льюис: The contract is an explicit coordination convention establishing mutual knowledge.
+    - Скотт Шапиро: This specification acts as a binding rule/plan that neither side may deviate from unilaterally.
+    - Джон Сёрл: The published contract elevates the endpoints and DTO structures to institutional facts.
+  version: 1.0.0
+servers:
+  - url: /api/v1
+    description: Local development / production base URL
+paths:
+  /ai-config:
+    get:
+      summary: Retrieve entire AI Configuration
+      description: Returns the full configuration, including the system prompt (persona), stop triggers, and structured intent rules.
+      operationId: getAIConfiguration
+      responses:
+        '200':
+          description: Successful retrieval of the AI configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AIConfiguration'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      summary: Overwrite entire AI Configuration
+      description: Replaces the active configuration. Both backend and frontend validate against this schema.
+      operationId: updateAIConfiguration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AIConfiguration'
+      responses:
+        '200':
+          description: AI Configuration successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AIConfiguration'
+        '400':
+          description: Invalid request payload (e.g., failed validation, missing fields)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /ai-config/system-prompt:
+    get:
+      summary: Retrieve the System Prompt (Persona)
+      description: Fetches only the currently active system prompt text used to instruct the LLM.
+      operationId: getSystemPrompt
+      responses:
+        '200':
+          description: Successful retrieval of the system prompt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemPromptResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      summary: Update the System Prompt (Persona)
+      description: Accepts the system prompt text to update the persona. This directly satisfies the core requirement.
+      operationId: updateSystemPrompt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SystemPromptUpdateRequest'
+      responses:
+        '200':
+          description: System prompt successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemPromptResponse'
+        '400':
+          description: Invalid system prompt text (e.g., blank or exceeds character limit)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /ai-config/intent-rules:
+    get:
+      summary: Retrieve all Intent Rules
+      description: Returns the structured array of intent rules/stop triggers.
+      operationId: getIntentRules
+      responses:
+        '200':
+          description: Successful retrieval of intent rules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IntentRule'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      summary: Update all Intent Rules
+      description: Overwrites the structured array of intent rules. The rules must be structured as an array of JSON objects.
+      operationId: updateIntentRules
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/IntentRule'
+      responses:
+        '200':
+          description: Intent rules successfully updated
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IntentRule'
+        '400':
+          description: Invalid request payload (e.g., malformed JSON array, invalid rule fields)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    AIConfiguration:
+      type: object
+      required:
+        - systemPrompt
+        - stopTriggers
+        - intentRules
+      properties:
+        systemPrompt:
+          type: string
+          description: "The core identity, behavioral constraints, and instructions for the LLM agent."
+          example: |
+            You are a highly analytical AI core developed for Synthetic Logic.
+            Your tone is clinical, precise, and devoid of unnecessary emotive flourishes.
+            Prioritize technical accuracy above all else.
+
+            Constraint 01: If a query is ambiguous, ask for technical specifications.
+            Constraint 02: Do not use bullet points for lists shorter than 3 items.
+            Constraint 03: Use ISO 8601 for all date references.
+        stopTriggers:
+          type: array
+          description: "Technical strings that immediately halt generation if detected in the output buffer."
+          items:
+            type: string
+          example:
+            - "ERR_TIMEOUT"
+            - "root_access"
+            - "kernel_panic"
+            - "[REDACTED]"
+        intentRules:
+          type: array
+          description: "An array of structured JSON objects specifying intent detection and triggered actions."
+          items:
+            $ref: '#/components/schemas/IntentRule'
+
+    SystemPromptResponse:
+      type: object
+      required:
+        - systemPrompt
+        - updatedAt
+      properties:
+        systemPrompt:
+          type: string
+          description: "The active system prompt text."
+          example: "You are a clinical and precise AI helper."
+        updatedAt:
+          type: string
+          format: date-time
+          description: "Timestamp of the last modification."
+          example: "2026-07-27T20:12:19Z"
+
+    SystemPromptUpdateRequest:
+      type: object
+      required:
+        - systemPrompt
+      properties:
+        systemPrompt:
+          type: string
+          description: "The new system prompt text to set."
+          maxLength: 8000
+          example: "You are a highly analytical AI core. Be concise."
+
+    IntentRule:
+      type: object
+      required:
+        - id
+        - intentName
+        - keywords
+        - action
+        - priority
+        - enabled
+      properties:
+        id:
+          type: string
+          description: "Unique identifier for the intent rule."
+          example: "rule-101"
+        intentName:
+          type: string
+          description: "Descriptive classification/label for the detected intent."
+          example: "payment_failure"
+        keywords:
+          type: array
+          items:
+            type: string
+          description: "Phrases or terms used to classify the incoming message under this intent."
+          example:
+            - "payment failed"
+            - "error 402"
+            - "unauthorized"
+        action:
+          type: string
+          enum: [HUMAN_TAKEOVER, STOP_GENERATION, AUTO_RESPOND]
+          description: "The system behavior triggered when the intent is matched."
+          example: "HUMAN_TAKEOVER"
+        priority:
+          type: integer
+          description: "Evaluation order (lower values are evaluated first)."
+          example: 1
+        enabled:
+          type: boolean
+          description: "Indicates whether this rule is actively evaluated."
+          example: true
+
+    ErrorResponse:
+      type: object
+      required:
+        - code
+        - message
+        - timestamp
+      properties:
+        code:
+          type: string
+          description: "Specific application-level error code."
+          example: "INVALID_SYSTEM_PROMPT"
+        message:
+          type: string
+          description: "A human-readable description of the error."
+          example: "The system prompt text cannot be empty and must not exceed 8000 characters."
+        timestamp:
+          type: string
+          format: date-time
+          description: "The time at which the error occurred."
+          example: "2026-07-27T20:15:11Z"
+        details:
+          type: array
+          items:
+            type: string
+          description: "Additional details or field-level validation errors."
+          example:
+            - "systemPrompt length is 0 (minimum 1 required)"
