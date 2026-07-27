@@ -106,4 +106,62 @@ public class WarmupServiceTest {
         assertEquals("COMPLETED", doubleCompleted.getStatus());
         assertEquals(9.0, updatedAccount.getTrustScore(), 0.0001);
     }
+
+    @Test
+    public void testExponentialDelayDeterministicCalculation() {
+        // Given
+        java.util.Random fixedRandom = new java.util.Random(1337L);
+        double lambda = 0.5;
+
+        // When
+        double delay1 = warmupService.calculateNextActionDelay(lambda, fixedRandom);
+        double delay2 = warmupService.calculateNextActionDelay(lambda, fixedRandom);
+
+        // Then
+        // Expected values generated with seed 1337 and lambda 0.5:
+        // -Math.log(1.0 - nextDouble()) / 0.5
+        java.util.Random expectedRandom = new java.util.Random(1337L);
+        double expected1 = -Math.log(1.0 - expectedRandom.nextDouble()) / 0.5;
+        double expected2 = -Math.log(1.0 - expectedRandom.nextDouble()) / 0.5;
+
+        assertEquals(expected1, delay1, 1e-9);
+        assertEquals(expected2, delay2, 1e-9);
+    }
+
+    @Test
+    public void testAssignToOutreachThrowsExceptionWhenAccountIsUnder30DaysOld() {
+        // Given
+        Instant creationDate = Instant.parse("2026-07-20T12:00:00Z"); // Less than 30 days old relative to clock (System clock or the one defined in configuration)
+        // Let's check using WarmupService which uses system clock if not injected, but we can verify by registering a very recent account.
+        // Or we could register and check. Since clock is systemUTC by default:
+        Instant now = Instant.now();
+        Instant recentCreationDate = now.minus(java.time.Duration.ofDays(10));
+        TelegramAccount recentAccount = warmupService.registerSession("recent-session", recentCreationDate, "WARMUP_1", 10.0);
+
+        // When/Then
+        assertThrows(IllegalStateException.class, () -> {
+            warmupService.assignToOutreach(recentAccount.getId());
+        });
+
+        // The stage should remain unchanged
+        TelegramAccount reloaded = warmupService.getAccount(recentAccount.getId()).orElseThrow();
+        assertEquals("WARMUP_1", reloaded.getWarmupStage());
+    }
+
+    @Test
+    public void testAssignToOutreachSuccessfullyTransitionsStageWhenAccountIs30DaysOrOlder() {
+        // Given
+        Instant now = Instant.now();
+        Instant oldCreationDate = now.minus(java.time.Duration.ofDays(35));
+        TelegramAccount oldAccount = warmupService.registerSession("old-session", oldCreationDate, "WARMUP_1", 10.0);
+
+        // When
+        TelegramAccount updatedAccount = warmupService.assignToOutreach(oldAccount.getId());
+
+        // Then
+        assertEquals("OUTREACH", updatedAccount.getWarmupStage());
+
+        TelegramAccount reloaded = warmupService.getAccount(oldAccount.getId()).orElseThrow();
+        assertEquals("OUTREACH", reloaded.getWarmupStage());
+    }
 }
