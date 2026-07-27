@@ -1,0 +1,225 @@
+openapi: 3.0.3
+info:
+  title: AI-Powered Telegram Lead Generation & Outreach Automation Platform (LeadGen Bot) - Campaign Management API
+  version: 1.0.0
+  description: API Contract for Lead Ingestion and Campaign Start/Stop/Configuration
+paths:
+  /api/campaigns:
+    post:
+      summary: Create a new Campaign
+      operationId: createCampaign
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CampaignCreateRequest'
+      responses:
+        '201':
+          description: Campaign successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignResponse'
+        '400':
+          description: Invalid input/payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/campaigns/{id}/leads/import:
+    post:
+      summary: Ingest/Import a lead list via CSV file
+      operationId: importLeads
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the Campaign to import leads into
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: CSV file containing lead target list (@username or phone numbers)
+              required:
+                - file
+      responses:
+        '200':
+          description: Leads successfully queued or imported
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadImportResponse'
+        '400':
+          description: Invalid CSV format or processing error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Campaign not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/campaigns/{id}/start:
+    post:
+      summary: Start a Campaign
+      operationId: startCampaign
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the Campaign to start
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Campaign successfully started
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignResponse'
+        '400':
+          description: Campaign cannot be started in its current state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Campaign not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/campaigns/{id}/stop:
+    post:
+      summary: Stop/Pause a Campaign
+      operationId: stopCampaign
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the Campaign to stop
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Campaign successfully stopped/paused
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignResponse'
+        '400':
+          description: Campaign cannot be stopped in its current state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Campaign not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    CampaignCreateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Promo Campaign Q3"
+        description:
+          type: string
+          example: "Cold outreach campaign targeting tech professionals"
+        spintaxTemplates:
+          type: array
+          items:
+            type: string
+          example:
+            - "{Hi|Hello} {there|friend}!"
+            - "Check out our {awesome|cool} service."
+        useLlmPersonalization:
+          type: boolean
+          default: false
+          description: Option to use LLM to dynamically rephrase outreach offers based on metadata or public bio information gathered from the lead's profile.
+          example: true
+      required:
+        - name
+        - spintaxTemplates
+
+    CampaignResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 123
+        name:
+          type: string
+          example: "Promo Campaign Q3"
+        description:
+          type: string
+          example: "Cold outreach campaign targeting tech professionals"
+        status:
+          type: string
+          enum: [PENDING, ACTIVE, PAUSED, COMPLETED]
+          example: "ACTIVE"
+        useLlmPersonalization:
+          type: boolean
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+          example: "2026-07-27T20:10:57Z"
+
+    LeadImportResponse:
+      type: object
+      properties:
+        campaignId:
+          type: integer
+          format: int64
+          example: 123
+        importedCount:
+          type: integer
+          example: 250
+        status:
+          type: string
+          example: "SUCCESS"
+        message:
+          type: string
+          example: "Successfully ingested 250 leads."
+
+    ErrorResponse:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          example: "CAMPAIGN_NOT_FOUND"
+        message:
+          type: string
+          example: "Campaign with ID 123 was not found."
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-07-27T20:15:00Z"
+      required:
+        - errorCode
+        - message
+        - timestamp

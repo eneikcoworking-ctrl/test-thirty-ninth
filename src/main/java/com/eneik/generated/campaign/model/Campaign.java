@@ -21,6 +21,9 @@ public class Campaign {
     @Column(nullable = false)
     private String status;
 
+    @Column(name = "use_llm_personalization", nullable = false)
+    private boolean useLlmPersonalization = false;
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -36,6 +39,13 @@ public class Campaign {
         this.name = name;
         this.description = description;
         this.status = status;
+    }
+
+    public Campaign(String name, String description, String status, boolean useLlmPersonalization) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.useLlmPersonalization = useLlmPersonalization;
     }
 
     public Long getId() {
@@ -68,6 +78,14 @@ public class Campaign {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public boolean isUseLlmPersonalization() {
+        return useLlmPersonalization;
+    }
+
+    public void setUseLlmPersonalization(boolean useLlmPersonalization) {
+        this.useLlmPersonalization = useLlmPersonalization;
     }
 
     public LocalDateTime getCreatedAt() {
