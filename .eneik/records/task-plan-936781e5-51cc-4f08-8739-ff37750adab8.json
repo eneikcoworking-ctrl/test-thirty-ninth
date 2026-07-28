@@ -1,0 +1,28 @@
+{
+  "epics": [
+    {
+      "existingEpicId": "95135fb8-dad0-4d1e-9e55-6006d68d92e8",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Unblock stagnant API slice review task f72b3411-8046-4c65-99c8-7df93049d707 by patching existing code directly"
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Patch existing API code to unblock task f72b3411-8046-4c65-99c8-7df93049d707",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When implementing the resolution for this epic, I want to patch the existing API code directly, so that the stagnant review task is unblocked and the project delivery pipeline remains fluid.",
+          "acceptanceCriteria": "Given task f72b3411-8046-4c65-99c8-7df93049d707 is blocked in the API slice review process\nWhen the engineer patches the existing API code directly\nThen the unblocking code changes are committed and the task is resolved",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "task_stagnation_bottleneck",
+          "sixSigmaMetric": "reduce blocked task count by 1",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        }
+      ]
+    }
+  ]
+}
