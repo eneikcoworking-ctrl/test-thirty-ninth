@@ -149,7 +149,7 @@
                                 id="spintax-textarea"
                                 bind:value={spintaxInput}
                                 class="w-full min-h-[150px] p-3 border border-outline-variant rounded text-body-md bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary outline-none font-mono"
-                                placeholder="Enter your spintax message here... e.g. {Hi|Hello} {first_name}"
+                                placeholder={"Enter your spintax message here... e.g. {Hi|Hello} {first_name}"}
                             ></textarea>
                             <p class="text-body-sm text-on-surface-variant mt-2">Use {'{opt1|opt2}'} to create random variations.</p>
                         </div>
