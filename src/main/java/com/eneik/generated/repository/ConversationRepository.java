@@ -1,9 +1,9 @@
 package com.eneik.generated.repository;
 
-import com.eneik.generated.entity.AiConfiguration;
+import com.eneik.generated.domain.Conversation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AiConfigurationRepository extends JpaRepository<AiConfiguration, Long> {
+public interface ConversationRepository extends JpaRepository<Conversation, String> {
 }
