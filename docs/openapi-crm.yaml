@@ -1,0 +1,253 @@
+openapi: 3.0.3
+info:
+  title: CRM Real-time API Contract
+  description: API Contract for Real-time CRM module. Specifies REST endpoints and Server-Sent Events (SSE) for syncing new messages and status changes.
+  version: 1.0.0
+servers:
+  - url: /api/v1
+paths:
+  /crm/conversations:
+    get:
+      summary: List all active conversations
+      operationId: listConversations
+      responses:
+        '200':
+          description: A list of conversations.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Conversation'
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /crm/conversations/{conversationId}/messages:
+    get:
+      summary: Get messages for a specific conversation
+      operationId: getConversationMessages
+      parameters:
+        - name: conversationId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of messages (dialogue turns).
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DialogueTurn'
+        '404':
+          description: Conversation not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: Send a new manual message
+      operationId: sendMessage
+      parameters:
+        - name: conversationId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewMessageRequest'
+      responses:
+        '201':
+          description: Message successfully sent.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DialogueTurn'
+        '400':
+          description: Invalid request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Conversation not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /crm/stream:
+    get:
+      summary: Server-Sent Events (SSE) stream for real-time CRM updates
+      description: Subscribe to receive real-time updates for new messages ('message.new') and status changes ('status.changed').
+      operationId: crmEventStream
+      responses:
+        '200':
+          description: SSE stream connected.
+          content:
+            text/event-stream:
+              schema:
+                type: string
+                description: Stream of events (message.new, status.changed).
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    Conversation:
+      type: object
+      required:
+        - id
+        - telegramAccountId
+        - status
+        - updatedAt
+      properties:
+        id:
+          type: string
+          example: "conv-123"
+        telegramAccountId:
+          type: integer
+          example: 42
+        leadUsername:
+          type: string
+          example: "john_doe"
+        leadPhoneNumber:
+          type: string
+          example: "+1234567890"
+        status:
+          type: string
+          example: "ACTIVE"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2026-07-27T20:07:27Z"
+
+    DialogueTurn:
+      type: object
+      required:
+        - id
+        - dialogueStateId
+        - sender
+        - messageText
+        - timestamp
+      properties:
+        id:
+          type: integer
+          example: 101
+        dialogueStateId:
+          type: integer
+          example: 55
+        sender:
+          type: string
+          example: "LEAD"
+        messageText:
+          type: string
+          example: "Hello, I am interested in your offer."
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-07-27T20:07:27Z"
+
+    NewMessageRequest:
+      type: object
+      required:
+        - messageText
+      properties:
+        messageText:
+          type: string
+          example: "Thank you for reaching out!"
+
+    SseEventMessageNew:
+      type: object
+      description: Payload for SSE event 'message.new'
+      required:
+        - event
+        - data
+      properties:
+        event:
+          type: string
+          enum: ["message.new"]
+        data:
+          type: object
+          required:
+            - conversationId
+            - message
+          properties:
+            conversationId:
+              type: string
+            message:
+              $ref: '#/components/schemas/DialogueTurn'
+
+    SseEventStatusChanged:
+      type: object
+      description: Payload for SSE event 'status.changed'
+      required:
+        - event
+        - data
+      properties:
+        event:
+          type: string
+          enum: ["status.changed"]
+        data:
+          type: object
+          required:
+            - conversationId
+            - oldStatus
+            - newStatus
+            - timestamp
+          properties:
+            conversationId:
+              type: string
+            oldStatus:
+              type: string
+            newStatus:
+              type: string
+            timestamp:
+              type: string
+              format: date-time
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+        - timestamp
+      properties:
+        status:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: "Invalid proxy configuration"
+        code:
+          type: string
+          description: Fine-grained application error code.
+          example: "PROXY_COLLISION"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-07-27T20:07:27Z"
