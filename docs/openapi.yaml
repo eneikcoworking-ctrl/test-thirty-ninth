@@ -1,0 +1,511 @@
+openapi: 3.0.3
+info:
+  title: Account Management & Session API Contract
+  description: |
+    API Contract for Module 1 (Account & Session Management) of the AI-Powered Telegram Lead Generation & Outreach Automation Platform (LeadGen Bot).
+    This contract specifies endpoints, request/response models, and error responses for multi-format session onboarding, isolated proxy binding, session health monitoring, human behavior emulation, daily messaging rate limits, and system health metrics.
+  version: 1.0.0
+servers:
+  - url: /api/v1
+    description: Local or relative base API path
+
+paths:
+  /accounts:
+    get:
+      summary: List Telegram accounts with statuses and proxy assignments
+      description: Returns a list of all onboarded Telegram accounts, including their statuses and bound proxy metadata.
+      operationId: listAccounts
+      responses:
+        '200':
+          description: A list of Telegram accounts.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TelegramAccount'
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /accounts/onboard/otp-request:
+    post:
+      summary: Initiate OTP-based account onboarding
+      description: Requests an OTP code to be sent to the specified Telegram phone number to initiate the authentication session.
+      operationId: requestOtp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - phoneNumber
+              properties:
+                phoneNumber:
+                  type: string
+                  pattern: '^\+[1-9]\d{1,14}$'
+                  example: "+1234567890"
+      responses:
+        '200':
+          description: OTP successfully requested from Telegram.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - referenceId
+                  - status
+                properties:
+                  referenceId:
+                    type: string
+                    description: Unique reference ID identifying this onboarding attempt (to be supplied when verifying OTP).
+                    example: "onb-9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d"
+                  status:
+                    type: string
+                    example: "PENDING_OTP"
+        '400':
+          description: Invalid request parameters or phone number format.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Failed to communicate with Telegram service.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /accounts/onboard/otp-verify:
+    post:
+      summary: Verify OTP code and finalize onboarding
+      description: Validates the received Telegram verification code and completes the onboarding process for the session.
+      operationId: verifyOtp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - referenceId
+                - code
+              properties:
+                referenceId:
+                  type: string
+                  example: "onb-9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d"
+                code:
+                  type: string
+                  description: The OTP verification code sent by Telegram.
+                  example: "12345"
+      responses:
+        '200':
+          description: Session successfully authenticated and account onboarded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TelegramAccount'
+        '400':
+          description: Invalid or expired OTP code or reference ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Authentication failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /accounts/onboard/file:
+    post:
+      summary: Onboard Telegram account via authenticated session files
+      description: Uploads a pre-authenticated `.session` or `tdata` file (formatted or compressed) to quickly onboard an account without OTP.
+      operationId: onboardByFile
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+                - format
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: The session or tdata archive file.
+                format:
+                  type: string
+                  enum: [SESSION, TDATA_ZIP]
+                  example: SESSION
+                phoneNumber:
+                  type: string
+                  description: Optional phone number associated with the file.
+                  example: "+1234567890"
+      responses:
+        '200':
+          description: Account successfully imported and onboarded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TelegramAccount'
+        '400':
+          description: Unsupported file format or corrupted file.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /accounts/{accountId}:
+    get:
+      summary: Get details of a single Telegram account
+      operationId: getAccount
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Account details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TelegramAccount'
+        '404':
+          description: Account not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      summary: Remove a Telegram account and terminate session
+      description: Log out and disconnect the session from Telegram, then remove the account metadata from the platform.
+      operationId: deleteAccount
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Account successfully removed.
+        '404':
+          description: Account not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /accounts/{accountId}/proxy:
+    put:
+      summary: Bind an isolated proxy to a Telegram account
+      description: Binds a dedicated proxy to prevent multi-account ip-ban chaining. If the proxy is already assigned to another account, this operation will fail due to strict isolated proxy constraints.
+      operationId: bindProxy
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProxyBindingRequest'
+      responses:
+        '200':
+          description: Proxy successfully bound.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TelegramAccount'
+        '400':
+          description: Invalid proxy parameters.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Proxy collision. The proxy is already bound to another active session.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Account not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /accounts/{accountId}/config:
+    get:
+      summary: Fetch behavior and rate limiting configuration for an account
+      operationId: getAccountConfig
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: The account behavioral and rate-limiting settings.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountConfig'
+        '404':
+          description: Account not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      summary: Update behavior and rate limiting configuration for an account
+      description: Configures the human behavior emulation (randomized pauses, typing signals) and daily messaging rate limits.
+      operationId: updateAccountConfig
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountConfig'
+      responses:
+        '200':
+          description: Configuration successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountConfig'
+        '400':
+          description: Invalid configuration values.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Account not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /metrics/health:
+    get:
+      summary: Retrieve system health and account status metrics
+      description: Real-time tracking of account status distributions (Active, Temporary Spam-Block, Permanent Ban, Re-authorization Required) and general server performance health indicators.
+      operationId: getHealthMetrics
+      responses:
+        '200':
+          description: Real-time health metrics.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthMetricsResponse'
+        '500':
+          description: Failed to aggregate health metrics.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    TelegramAccount:
+      type: object
+      required:
+        - id
+        - phoneNumber
+        - status
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 42
+        phoneNumber:
+          type: string
+          example: "+1234567890"
+        status:
+          type: string
+          enum: [Active, Temporary Spam-Block, Permanent Ban, Re-authorization Required]
+          description: Real-time tracking of account status.
+          example: Active
+        userId:
+          type: integer
+          format: int64
+          nullable: true
+          description: Owner user of the session.
+          example: 1
+        proxy:
+          $ref: '#/components/schemas/ProxyInfo'
+
+    ProxyInfo:
+      type: object
+      required:
+        - id
+        - host
+        - port
+        - type
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 12
+        host:
+          type: string
+          example: "192.168.1.10"
+        port:
+          type: integer
+          example: 1080
+        type:
+          type: string
+          enum: [SOCKS5, HTTP]
+          example: SOCKS5
+        username:
+          type: string
+          nullable: true
+          example: "proxy_user"
+
+    ProxyBindingRequest:
+      type: object
+      required:
+        - host
+        - port
+        - type
+      properties:
+        host:
+          type: string
+          example: "192.168.1.10"
+        port:
+          type: integer
+          example: 1080
+        type:
+          type: string
+          enum: [SOCKS5, HTTP]
+          example: SOCKS5
+        username:
+          type: string
+          example: "proxy_user"
+        password:
+          type: string
+          example: "secret_pass"
+
+    AccountConfig:
+      type: object
+      required:
+        - minPauseSeconds
+        - maxPauseSeconds
+        - typingSignalEnabled
+        - maxDailyOutboundMessages
+      properties:
+        minPauseSeconds:
+          type: integer
+          minimum: 0
+          description: Minimum pause between outreach actions to emulate human behavior.
+          example: 120
+        maxPauseSeconds:
+          type: integer
+          minimum: 0
+          description: Maximum pause between outreach actions to emulate human behavior.
+          example: 300
+        typingSignalEnabled:
+          type: boolean
+          description: Whether to send 'typing...' status prior to dispatching messages.
+          example: true
+        maxDailyOutboundMessages:
+          type: integer
+          minimum: 1
+          description: Strict daily messaging limit per account to avoid flood control.
+          example: 15
+
+    HealthMetricsResponse:
+      type: object
+      required:
+        - systemStatus
+        - totalAccounts
+        - activeSessionsCount
+        - statusDistribution
+        - uptimeSeconds
+      properties:
+        systemStatus:
+          type: string
+          enum: [HEALTHY, DEGRADED, DOWN]
+          example: HEALTHY
+        totalAccounts:
+          type: integer
+          example: 24
+        activeSessionsCount:
+          type: integer
+          example: 18
+        statusDistribution:
+          type: object
+          properties:
+            active:
+              type: integer
+              example: 18
+            temporarySpamBlock:
+              type: integer
+              example: 3
+            permanentBan:
+              type: integer
+              example: 1
+            reAuthorizationRequired:
+              type: integer
+              example: 2
+        uptimeSeconds:
+          type: integer
+          format: int64
+          example: 345600
+
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - message
+        - timestamp
+      properties:
+        status:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: "Invalid proxy configuration"
+        code:
+          type: string
+          description: Fine-grained application error code.
+          example: "PROXY_COLLISION"
+        timestamp:
+          type: string
+          format: date-time
+          example: "2026-07-27T20:07:27Z"
