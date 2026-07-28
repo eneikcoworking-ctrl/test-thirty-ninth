@@ -73,14 +73,10 @@ public class DialogueSchemaTest {
         long totalConversations = conversationRepository.count();
         assertThat(totalConversations).isEqualTo(2003);
 
-        // 3. Act & Assert - Query the custom view and verify correctness
-        List<Map<String, Object>> viewRows = jdbcTemplate.queryForList("SELECT * FROM unified_inbox_view ORDER BY conversation_updated_at DESC");
-        assertThat(viewRows.size()).isEqualTo(2003);
-
-        Map<String, Object> latestRow = viewRows.get(0);
-        assertThat(latestRow.get("CONVERSATION_ID")).isEqualTo("conv-2003");
-        assertThat(latestRow.get("LEAD_USERNAME")).isEqualTo("lead_2003");
-        assertThat(latestRow.get("ACCOUNT_SESSION_NAME")).isIn("agent_tom", "agent_alice");
+        // Note: The unified_inbox_view test assertions were removed here because
+        // the view was updated in V20260727201514542 to point to dialogue_state
+        // instead of conversations. The new view is tested thoroughly in
+        // DialogueInboxViewTest.java.
 
         // 4. Act & Assert - Run EXPLAIN to verify the index is used on status filter queries with thousands of records
         // H2 "EXPLAIN" output contains the execution plan description which mentions the index name if used.
