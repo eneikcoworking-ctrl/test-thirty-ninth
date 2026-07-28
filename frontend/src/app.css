@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+:root {
+  --primary: #FF3E00;
+  --primary-fixed: #FFB39E;
+  --secondary: #0F172A;
+  --secondary-fixed: #E2E8F0;
+  --surface: #FFFFFF;
+  --surface-container-lowest: #F8FAFC;
+  --surface-container-low: #F1F5F9;
+  --surface-container-highest: #E2E8F0;
+  --on-surface: #0F172A;
+  --on-surface-variant: #64748B;
+  --outline-variant: #CBD5E1;
+}
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.card-shadow {
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+}
+
+.compact-table td {
+  padding: 8px 16px;
+}
