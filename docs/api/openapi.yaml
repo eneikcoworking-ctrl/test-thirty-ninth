@@ -1,0 +1,110 @@
+openapi: 3.0.3
+info:
+  title: LeadGen Bot API
+  version: 1.0.0
+  description: API for managing Telegram lead generation and outreach campaigns.
+paths:
+  /api/inbox:
+    get:
+      summary: Get Unified Inbox
+      description: Returns a consolidated view of all active conversations across all Telegram accounts, sorted by latest activity.
+      operationId: getUnifiedInbox
+      responses:
+        '200':
+          description: A list of unified inbox items.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnifiedInboxItem'
+  /api/inbox/{dialogueId}/reply:
+    post:
+      summary: Send Manual Reply
+      description: Sends a manual reply in the specified dialogue, automatically pausing the AI agent for that conversation.
+      operationId: manualReply
+      parameters:
+        - name: dialogueId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplyRequest'
+      responses:
+        '200':
+          description: The recorded dialogue turn.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DialogueTurnResponse'
+        '400':
+          description: Invalid input or missing dialogue.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict (e.g. state updated concurrently).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    UnifiedInboxItem:
+      type: object
+      properties:
+        dialogueId:
+          type: integer
+          format: int64
+        tgAccountId:
+          type: integer
+          format: int64
+        accountPhoneNumber:
+          type: string
+        dialogueStatus:
+          type: string
+        aiTurnsCount:
+          type: integer
+        humanInterventionRequired:
+          type: boolean
+        lastActivityAt:
+          type: string
+          format: date-time
+    ReplyRequest:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+    DialogueTurnResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        sender:
+          type: string
+        messageText:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string

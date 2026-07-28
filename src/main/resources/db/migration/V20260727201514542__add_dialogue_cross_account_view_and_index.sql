@@ -1,5 +1,5 @@
--- V20260727201345674__add_dialogue_cross_account_view_and_index.sql
--- Add cross-account dialogue association, status, optimized indexes and unified inbox view.
+-- Drop the view if it exists so we can recreate it with new fields
+DROP VIEW IF EXISTS unified_inbox_view;
 
 -- 1. Add tg_account_id linking dialogue_state to tg_accounts
 ALTER TABLE dialogue_state ADD COLUMN tg_account_id BIGINT;
