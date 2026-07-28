@@ -1,5 +1,6 @@
 package com.eneik.generated.model;
 
+import com.eneik.generated.entity.TGAccount;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,6 +13,13 @@ public class DialogueState {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tg_account_id")
+    private TGAccount tgAccount;
+
+    @Column(name = "status", nullable = false)
+    private String status = "ACTIVE";
 
     @Column(name = "ai_turns_count", nullable = false)
     private int aiTurnsCount = 0;
@@ -53,6 +61,22 @@ public class DialogueState {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public TGAccount getTgAccount() {
+        return tgAccount;
+    }
+
+    public void setTgAccount(TGAccount tgAccount) {
+        this.tgAccount = tgAccount;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public int getAiTurnsCount() {
