@@ -1,102 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=JetBrains+Mono:wght@100..800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
-
 @import "tailwindcss";
 
-/* Deontic: CLS protection, WCAG accessible relative sizes, custom styles */
 :root {
-  --font-geist: "Geist", system-ui, -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
-
-  /* Standard Tailwind 4 handles most of this, but we override sizes to be rem-based */
-  font-size: 16px; /* 1rem = 16px */
+  --primary: #FF3E00;
+  --primary-fixed: #FFB39E;
+  --secondary: #0F172A;
+  --secondary-fixed: #E2E8F0;
+  --surface: #FFFFFF;
+  --surface-container-lowest: #F8FAFC;
+  --surface-container-low: #F1F5F9;
+  --surface-container-highest: #E2E8F0;
+  --on-surface: #0F172A;
+  --on-surface-variant: #64748B;
+  --outline-variant: #CBD5E1;
 }
 
 body {
-  background-color: #0A0A0B;
-  color: #e3e2e7;
-  font-family: var(--font-geist);
   margin: 0;
-  -webkit-font-smoothing: antialiased;
-}
-
-.material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-}
-
-.glass-card {
-  background: rgba(28, 28, 30, 0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.custom-scrollbar::-webkit-scrollbar {
-  width: 4px;
-}
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #3A3A3C;
-  border-radius: 10px;
-}
-
-/* Syntax Highlighter Overlay styles */
-.highlighter-container {
-  position: relative;
-  width: 100%;
-  height: 12rem; /* h-48 */
-}
-
-.highlighter-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  padding: 1rem; /* p-md */
-  margin: 0;
-  border: 1px solid transparent;
-  pointer-events: none;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  color: #e3e2e7; /* Displayed text is in the overlay */
-  overflow-y: auto;
-  font-family: var(--font-mono);
-  font-size: 0.75rem; /* text-xs equivalent in rem */
-  line-height: 1.25rem;
-}
-
-.highlighter-textarea {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  padding: 1rem; /* p-md */
-  margin: 0;
-  background: transparent;
-  border: 1px solid #3A3A3C;
-  border-radius: 0.5rem;
-  color: transparent; /* Make text transparent to prevent double rendering */
-  caret-color: #adc6ff; /* Keep cursor visible */
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  line-height: 1.25rem;
-  resize: none;
-  overflow-y: auto;
-  outline: none;
-}
-
-.highlighter-textarea:focus {
-  border-color: #adc6ff;
-  box-shadow: 0 0 0 2px rgba(173, 198, 255, 0.3);
-}
-
-/* Ensure focus highlights are highly visible for accessibility */
-button:focus-visible,
-input:focus-visible,
-select:focus-visible {
-  outline: 2px solid #adc6ff;
-  outline-offset: 2px;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
