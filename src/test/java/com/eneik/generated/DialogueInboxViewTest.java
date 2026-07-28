@@ -12,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,6 +60,21 @@ public class DialogueInboxViewTest {
         ds3.setUpdatedAt(now);
         dialogueStateRepository.save(ds3);
 
+        // 2.5 Arrange: Seed thousands of additional dialogues to fulfill "thousands of messages" Acceptance Criteria
+        List<DialogueState> bulkList = new ArrayList<>();
+        for (int i = 4; i <= 2003; i++) {
+            TGAccount selectedAccount = (i % 2 == 0) ? account1 : account2;
+            String status = (i % 3 == 0) ? "ACTIVE" : "PENDING_HUMAN";
+            DialogueState ds = new DialogueState();
+            ds.setTgAccount(selectedAccount);
+            ds.setStatus(status);
+            ds.setUpdatedAt(now.minusMinutes(100 + i));
+            ds.setAiTurnsCount(i % 5);
+            ds.setHumanInterventionRequired(i % 4 == 0);
+            bulkList.add(ds);
+        }
+        dialogueStateRepository.saveAll(bulkList);
+
         dialogueStateRepository.flush();
         entityManager.clear();
 
@@ -68,7 +84,11 @@ public class DialogueInboxViewTest {
         ).getResultList();
 
         // 4. Assert: Correct number of rows and order (ds3 then ds1)
-        assertThat(results).hasSize(2);
+        // Since we added 2000 records, let's verify total count matching 'ACTIVE'
+        // Specifically, ds1, ds3 are ACTIVE (2) plus bulkList records where i % 3 == 0
+        // i from 4 to 2003. Total count of divisibles is 666.
+        // Total should be 666 + 2 = 668.
+        assertThat(results).hasSize(668);
 
         Object[] firstRow = (Object[]) results.get(0);
         // columns: dialogue_id, tg_account_id, account_phone_number, dialogue_status, ai_turns_count, human_intervention_required, last_activity_at
