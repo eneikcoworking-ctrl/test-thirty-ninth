@@ -1,0 +1,81 @@
+{
+  "epics": [
+    {
+      "existingEpicId": null,
+      "title": "System Invariants and Traceability Integrity",
+      "jtbd": "When operating the platform, I want database migrations to be deterministic and application errors to be visibly logged, so that the system state remains invariant and failures are traceable.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "complex",
+      "sixSigmaMetric": "Reduce unlogged fallback responses and migration deployment conflicts to zero.",
+      "tocConstraintRef": "System debuggability and build stability bottleneck",
+      "sourceIndex": 0,
+      "requirements": [
+        "R1: Ensure Flyway migration versions are strictly unique and monotonic to prevent build failures from duplicate version prefixes (V20260727201514542).",
+        "R2: Implement explicit SLF4J error logging with context in LlmOfferPersonalizationService before returning the baseOffer fallback."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Resolve Flyway Migration Version Conflict",
+          "roleTag": "BARCAN-TAG-08",
+          "jtbd": "When resolving the Flyway version duplicate for this epic, I want to ensure the migration versions are distinct, so that the monotonic invariance of database schema updates is restored.",
+          "acceptanceCriteria": "Given a Flyway migration directory with duplicate version prefixes,\nWhen the application context starts and applies migrations,\nThen Flyway must execute without duplicate version errors and the database state must be fully consistent.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Database migration deployment stability",
+          "sixSigmaMetric": "0 build failures due to Flyway migration version conflicts",
+          "hasUi": false,
+          "requirementRefs": [
+            "R1"
+          ]
+        },
+        {
+          "title": "Implement Traceability in Offer Personalization",
+          "roleTag": "BARCAN-TAG-02",
+          "jtbd": "When fixing the silent error handling for this epic, I want to add explicit logging to the catch block in LlmOfferPersonalizationService, so that underlying personalization failures are fully traceable.",
+          "acceptanceCriteria": "Given the LlmOfferPersonalizationService encounters an exception during personalization,\nWhen the service falls back to returning the baseOffer,\nThen the exact exception and context must be explicitly logged via SLF4J at the ERROR level.",
+          "leanValue": "essential",
+          "cynefinDomain": "clear",
+          "tocConstraintRef": "AI offer personalization debuggability",
+          "sixSigmaMetric": "100% of LlmOfferPersonalizationService exceptions are logged with context",
+          "hasUi": false,
+          "requirementRefs": [
+            "R2"
+          ]
+        }
+      ]
+    },
+    {
+      "existingEpicId": null,
+      "title": "Mobile Responsive Homepage UI",
+      "jtbd": "When a user accesses the homepage on a mobile device, I want the layout to adapt fluidly and UI controls to meet physical interaction standards, so that the platform is fully accessible on smaller screens.",
+      "kanoClass": "Must-Be",
+      "cynefinDomain": "complex",
+      "sixSigmaMetric": "100% compliance with mobile accessibility guidelines for touch target sizes.",
+      "tocConstraintRef": "Mobile user acquisition and interaction friction",
+      "sourceIndex": 1,
+      "requirements": [
+        "R1: Implement responsive layout using media queries on the homepage to properly adapt to mobile viewport widths (e.g., 375px).",
+        "R2: Enforce a minimum physical size of 44x44px for all interactive control elements (buttons, navigation links) on mobile."
+      ],
+      "coverageComplete": true,
+      "slices": [
+        {
+          "title": "Implement Homepage Responsive Layout and Touch Targets",
+          "roleTag": "BARCAN-TAG-11",
+          "jtbd": "When implementing the responsive layout for this epic, I want to add media queries and correct dimensions to +page.svelte, so that mobile users can successfully interact with the UI without physical accessibility barriers.",
+          "acceptanceCriteria": "Given a user accessing the homepage on a mobile device (e.g., 375px viewport),\nWhen rendering the UI controls and layout elements,\nThen the layout must be adapted to the viewport and all interactive touch targets must measure at least 44x44px.",
+          "leanValue": "essential",
+          "cynefinDomain": "complicated",
+          "tocConstraintRef": "Frontend UI responsiveness and physical interaction limitations",
+          "sixSigmaMetric": "0 interactive elements under 44x44px on mobile viewports",
+          "hasUi": true,
+          "requirementRefs": [
+            "R1",
+            "R2"
+          ]
+        }
+      ]
+    }
+  ]
+}
