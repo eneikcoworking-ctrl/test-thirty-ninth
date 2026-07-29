@@ -71,23 +71,23 @@
 <div class="min-h-screen bg-surface text-on-surface pb-28 md:pb-8">
 	<!-- Top App Bar -->
 	<header class="bg-surface border-b border-outline-variant px-4 py-2 flex items-center justify-between sticky top-0 z-40 h-16 shadow-sm">
-		<div class="flex items-center gap-2">
+		<div class="flex items-center gap-3">
 			<button
 				type="button"
-				aria-label="Toggle Navigation Menu"
+				aria-label="Open menu"
 				class="flex items-center justify-center w-11 h-11 text-on-surface hover:bg-surface-container-low rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary outline-none"
 			>
-				<span class="material-symbols-outlined" data-icon="menu">menu</span>
+				<span class="material-symbols-outlined text-on-surface" data-icon="menu">menu</span>
 			</button>
 			<h1 class="text-title-lg font-title-lg text-on-surface m-0 select-none font-bold">Campaign Dashboard</h1>
 		</div>
-		<div class="flex items-center gap-2">
+		<div class="flex items-center gap-3">
 			<button
 				type="button"
 				aria-label="Notifications"
 				class="flex items-center justify-center w-11 h-11 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary outline-none"
 			>
-				<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+				<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
 			</button>
 			<button
 				type="button"
@@ -123,14 +123,22 @@
                                 type="file"
                                 accept=".csv,.txt"
                                 onchange={handleFileChange}
+<<<<<<< HEAD
                                 class="block w-full text-body-md text-on-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary outline-none file:mr-4 file:py-3 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary-fixed file:text-primary hover:file:bg-primary/20 file:min-h-[44px] cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+=======
+                                class="block w-full text-body-md text-on-surface border border-outline-variant rounded p-3 min-h-[2.75rem] focus:border-primary focus:ring-1 focus:ring-primary outline-none file:mr-4 file:py-3 file:px-6 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary-fixed file:text-primary hover:file:bg-primary/20 file:min-h-[2.75rem] file:cursor-pointer"
+>>>>>>> 2eed351 (feat: implement homepage responsive layout and tactile touch targets)
                                 disabled={isUploading}
                                 aria-disabled={isUploading}
                             />
                         </div>
 						<button
 							type="submit"
+<<<<<<< HEAD
 							class="w-full sm:w-auto bg-primary text-surface px-6 py-3 rounded text-label-md font-bold uppercase tracking-wider disabled:opacity-50 min-h-[44px] hover:bg-primary/90 focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2 transition-colors cursor-pointer"
+=======
+							class="bg-primary text-surface px-6 py-3 rounded text-label-md font-bold uppercase tracking-wider self-start disabled:opacity-50 min-h-[2.75rem] min-w-[10rem] hover:bg-primary/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-colors"
+>>>>>>> 2eed351 (feat: implement homepage responsive layout and tactile touch targets)
 							disabled={!leadsFile || isUploading}
                             aria-disabled={!leadsFile || isUploading}
 						>
@@ -182,7 +190,11 @@
                         <button
                             type="button"
                             onclick={() => { deterministicSeed += 0.1; }}
+<<<<<<< HEAD
                             class="text-primary p-2 hover:bg-surface-container-highest rounded-full transition-colors flex items-center justify-center min-w-[44px] min-h-[44px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary outline-none cursor-pointer"
+=======
+                            class="text-primary p-2 hover:bg-surface-container-highest rounded-full transition-colors flex items-center justify-center min-w-[2.75rem] min-h-[2.75rem] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+>>>>>>> 2eed351 (feat: implement homepage responsive layout and tactile touch targets)
                             aria-label="Regenerate Preview"
                         >
                             <span class="material-symbols-outlined text-xl" data-icon="refresh">refresh</span>
@@ -221,6 +233,7 @@
 	</main>
 
     <!-- Bottom Navigation Bar (Mobile) -->
+<<<<<<< HEAD
     <nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-surface border-t border-outline-variant py-3 px-4 pb-safe shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
         <a class="flex flex-col items-center justify-center text-primary font-bold transition-transform duration-150 active:scale-90 min-w-[48px] min-h-[48px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary rounded outline-none" href="/">
             <span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
@@ -233,6 +246,20 @@
         <a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-transform duration-150 active:scale-90 px-2 py-1 rounded min-w-[48px] min-h-[48px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary outline-none" href="/">
             <span class="material-symbols-outlined" data-icon="group">group</span>
             <span class="text-label-sm font-label-md">Leads</span>
+=======
+    <nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-surface border-t border-outline-variant py-3 px-4 pb-safe h-20 shadow-lg">
+        <a class="flex flex-col items-center justify-center text-primary font-bold transition-transform duration-150 active:scale-90 min-w-[3rem] min-h-[3rem] p-2 hover:bg-surface-container-low rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-primary" href="/">
+            <span class="material-symbols-outlined text-2xl" data-icon="rocket_launch">rocket_launch</span>
+            <span class="text-[0.75rem] font-medium leading-tight mt-1">Launch</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-transform duration-150 active:scale-90 min-w-[3rem] min-h-[3rem] p-2 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-primary" href="/">
+            <span class="material-symbols-outlined text-2xl" data-icon="dashboard">dashboard</span>
+            <span class="text-[0.75rem] font-medium leading-tight mt-1">Dashboard</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-transform duration-150 active:scale-90 min-w-[3rem] min-h-[3rem] p-2 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-primary" href="/">
+            <span class="material-symbols-outlined text-2xl" data-icon="group">group</span>
+            <span class="text-[0.75rem] font-medium leading-tight mt-1">Leads</span>
+>>>>>>> 2eed351 (feat: implement homepage responsive layout and tactile touch targets)
         </a>
     </nav>
 </div>
