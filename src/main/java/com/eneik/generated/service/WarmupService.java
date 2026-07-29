@@ -92,7 +92,7 @@ public class WarmupService {
 
         // Optimistically locked update of the trust score
         account.setTrustScore(account.getTrustScore() + scoreImpact);
-        accountRepository.save(account);
+        accountRepository.saveAndFlush(account);
 
         return task;
     }
