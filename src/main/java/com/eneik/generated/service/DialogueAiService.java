@@ -111,6 +111,7 @@ public class DialogueAiService {
                 LocalDateTime.now()
         );
         state.setAiTurnsCount(updatedCount);
+        stateRepository.saveAndFlush(state);
 
         return aiTurn;
     }
