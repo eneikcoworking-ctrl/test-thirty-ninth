@@ -68,25 +68,41 @@
     }
 </script>
 
-<div class="min-h-screen bg-surface text-on-surface pb-24 md:pb-8">
+<div class="min-h-screen bg-surface text-on-surface pb-28 md:pb-8">
 	<!-- Top App Bar -->
-	<header class="bg-surface border-b border-outline-variant px-4 py-3 flex items-center justify-between sticky top-0 z-40 h-16">
-		<div class="flex items-center gap-3">
-			<span class="material-symbols-outlined text-on-surface" data-icon="menu">menu</span>
-			<h1 class="text-title-lg font-title-lg text-on-surface m-0">Campaign Dashboard</h1>
+	<header class="bg-surface border-b border-outline-variant px-4 py-2 flex items-center justify-between sticky top-0 z-40 h-16 shadow-sm">
+		<div class="flex items-center gap-2">
+			<button
+				type="button"
+				aria-label="Toggle Navigation Menu"
+				class="flex items-center justify-center w-11 h-11 text-on-surface hover:bg-surface-container-low rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary outline-none"
+			>
+				<span class="material-symbols-outlined" data-icon="menu">menu</span>
+			</button>
+			<h1 class="text-title-lg font-title-lg text-on-surface m-0 select-none font-bold">Campaign Dashboard</h1>
 		</div>
-		<div class="flex items-center gap-4">
-			<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
-			<div class="w-8 h-8 bg-surface-container-highest rounded-full flex items-center justify-center border border-outline-variant">
+		<div class="flex items-center gap-2">
+			<button
+				type="button"
+				aria-label="Notifications"
+				class="flex items-center justify-center w-11 h-11 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary outline-none"
+			>
+				<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+			</button>
+			<button
+				type="button"
+				aria-label="User Profile"
+				class="w-11 h-11 bg-surface-container-highest rounded-full flex items-center justify-center border border-outline-variant hover:bg-surface-container-low transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary outline-none"
+			>
 				<span class="material-symbols-outlined text-on-surface text-sm" data-icon="person">person</span>
-			</div>
+			</button>
 		</div>
 	</header>
 
-	<main class="max-w-7xl mx-auto p-4 lg:p-8">
+	<main class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
         <!-- Title & Subtitle -->
         <div class="mb-8">
-            <h2 class="text-display-sm font-display-sm">Launch New Campaign</h2>
+            <h2 class="text-display-sm font-display-sm font-extrabold text-on-surface tracking-tight">Launch New Campaign</h2>
             <p class="text-body-lg text-on-surface-variant mt-2">Upload leads and configure your outreach message.</p>
         </div>
 
@@ -95,26 +111,26 @@
 			<section class="lg:col-span-7 flex flex-col gap-6">
                 <!-- Lead Upload Card -->
 				<div class="bg-surface border border-outline-variant p-6 rounded shadow-sm relative overflow-hidden">
-                    <h3 class="text-title-md font-title-md mb-4 flex items-center gap-2">
+                    <h3 class="text-title-md font-title-md mb-4 flex items-center gap-2 font-bold">
                         <span class="material-symbols-outlined text-primary" data-icon="upload_file">upload_file</span>
                         Upload Leads
                     </h3>
 					<form onsubmit={handleUploadSubmit} class="flex flex-col gap-4">
                         <div>
-                            <label for="file-upload" class="block text-label-md font-label-md text-on-surface-variant mb-1">CSV File</label>
+                            <label for="file-upload" class="block text-label-md font-label-md text-on-surface-variant mb-2">CSV File</label>
                             <input
                                 id="file-upload"
                                 type="file"
                                 accept=".csv,.txt"
                                 onchange={handleFileChange}
-                                class="block w-full text-body-md text-on-surface border border-outline-variant rounded p-2 focus:border-primary focus:ring-1 focus:ring-primary outline-none file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary-fixed file:text-primary hover:file:bg-primary/20"
+                                class="block w-full text-body-md text-on-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary outline-none file:mr-4 file:py-3 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary-fixed file:text-primary hover:file:bg-primary/20 file:min-h-[44px] cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
                                 disabled={isUploading}
                                 aria-disabled={isUploading}
                             />
                         </div>
 						<button
 							type="submit"
-							class="bg-primary text-surface px-4 py-2 rounded text-label-md font-bold uppercase tracking-wider self-start disabled:opacity-50 min-h-[44px] hover:bg-primary/90 focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-colors"
+							class="w-full sm:w-auto bg-primary text-surface px-6 py-3 rounded text-label-md font-bold uppercase tracking-wider disabled:opacity-50 min-h-[44px] hover:bg-primary/90 focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2 transition-colors cursor-pointer"
 							disabled={!leadsFile || isUploading}
                             aria-disabled={!leadsFile || isUploading}
 						>
@@ -138,17 +154,17 @@
 
 				<!-- Spintax Configuration Card -->
 				<div class="bg-surface border border-outline-variant p-6 rounded shadow-sm">
-                     <h3 class="text-title-md font-title-md mb-4 flex items-center gap-2">
+                     <h3 class="text-title-md font-title-md mb-4 flex items-center gap-2 font-bold">
                         <span class="material-symbols-outlined text-primary" data-icon="edit_document">edit_document</span>
                         Message Template
                     </h3>
 					<div class="flex flex-col gap-4">
                         <div>
-                            <label for="spintax-textarea" class="block text-label-md font-label-md text-on-surface-variant mb-1">Spintax Editor</label>
+                            <label for="spintax-textarea" class="block text-label-md font-label-md text-on-surface-variant mb-2">Spintax Editor</label>
                             <textarea
                                 id="spintax-textarea"
                                 bind:value={spintaxInput}
-                                class="w-full min-h-[150px] p-3 border border-outline-variant rounded text-body-md bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary outline-none font-mono"
+                                class="w-full min-h-[150px] p-3 border border-outline-variant rounded text-body-md bg-surface-container-lowest focus:border-primary focus:ring-1 focus:ring-primary outline-none font-mono focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
                                 placeholder={"Enter your spintax message here... e.g. {Hi|Hello} {first_name}"}
                             ></textarea>
                             <p class="text-body-sm text-on-surface-variant mt-2">Use {'{opt1|opt2}'} to create random variations.</p>
@@ -162,17 +178,18 @@
                 <!-- Spintax Preview Section -->
 				<div class="bg-surface-container-low border border-outline-variant p-6 rounded shadow-sm min-h-[200px]">
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-title-md font-title-md">Preview</h3>
+                        <h3 class="text-title-md font-title-md font-bold">Preview</h3>
                         <button
+                            type="button"
                             onclick={() => { deterministicSeed += 0.1; }}
-                            class="text-primary p-2 hover:bg-surface-container-highest rounded-full transition-colors flex items-center justify-center min-w-[44px] min-h-[44px]"
+                            class="text-primary p-2 hover:bg-surface-container-highest rounded-full transition-colors flex items-center justify-center min-w-[44px] min-h-[44px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary outline-none cursor-pointer"
                             aria-label="Regenerate Preview"
                         >
                             <span class="material-symbols-outlined text-xl" data-icon="refresh">refresh</span>
                         </button>
                     </div>
 
-					<div class="bg-surface border border-outline-variant p-4 rounded text-body-md text-on-surface h-full">
+					<div class="bg-surface border border-outline-variant p-4 rounded text-body-md text-on-surface h-full min-h-[100px]">
                         {#if spintaxInput}
                             <p class="whitespace-pre-wrap">{spintaxPreview}</p>
                         {:else}
@@ -183,15 +200,15 @@
 
                 <!-- Info Card -->
                 <div class="bg-surface border border-outline-variant p-6 rounded shadow-sm">
-                    <h3 class="text-title-md font-title-md mb-2">Campaign Readiness</h3>
+                    <h3 class="text-title-md font-title-md mb-2 font-bold">Campaign Readiness</h3>
                     <ul class="space-y-3 mt-4">
                         <li class="flex items-center gap-3">
                             <span class="material-symbols-outlined text-primary" data-icon="check_circle">check_circle</span>
-                            <span class="text-body-md text-on-surface">Proxies Assigned</span>
+                            <span class="text-body-md text-on-surface font-semibold">Proxies Assigned</span>
                         </li>
                         <li class="flex items-center gap-3">
                             <span class="material-symbols-outlined text-primary" data-icon="check_circle">check_circle</span>
-                            <span class="text-body-md text-on-surface">Accounts Warmed Up</span>
+                            <span class="text-body-md text-on-surface font-semibold">Accounts Warmed Up</span>
                         </li>
                         <li class="flex items-center gap-3 opacity-50">
                             <span class="material-symbols-outlined text-on-surface-variant" data-icon="radio_button_unchecked">radio_button_unchecked</span>
@@ -204,16 +221,16 @@
 	</main>
 
     <!-- Bottom Navigation Bar (Mobile) -->
-    <nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-surface border-t border-outline-variant py-2 px-4 pb-safe">
-        <a class="flex flex-col items-center justify-center text-primary font-bold transition-transform duration-150 active:scale-90 min-w-[48px] min-h-[48px]" href="/">
+    <nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-surface border-t border-outline-variant py-3 px-4 pb-safe shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
+        <a class="flex flex-col items-center justify-center text-primary font-bold transition-transform duration-150 active:scale-90 min-w-[48px] min-h-[48px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary rounded outline-none" href="/">
             <span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
             <span class="text-label-sm font-label-md">Launch</span>
         </a>
-        <a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-transform duration-150 active:scale-90 px-2 py-1 rounded min-w-[48px] min-h-[48px]" href="/">
+        <a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-transform duration-150 active:scale-90 px-2 py-1 rounded min-w-[48px] min-h-[48px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary outline-none" href="/">
             <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
             <span class="text-label-sm font-label-md">Dashboard</span>
         </a>
-        <a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-transform duration-150 active:scale-90 px-2 py-1 rounded min-w-[48px] min-h-[48px]" href="/">
+        <a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-transform duration-150 active:scale-90 px-2 py-1 rounded min-w-[48px] min-h-[48px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary outline-none" href="/">
             <span class="material-symbols-outlined" data-icon="group">group</span>
             <span class="text-label-sm font-label-md">Leads</span>
         </a>
