@@ -1,0 +1,10 @@
+{
+  "verdicts": [
+    {
+      "sourceIndex": 0,
+      "verdict": "block",
+      "criticalReason": "Committed build artifacts in the target/ directory, including compiled .class files, surefire test reports (TEST-*.xml), and incorrectly relocated source migrations under target/classes/.",
+      "concerns": []
+    }
+  ]
+}
