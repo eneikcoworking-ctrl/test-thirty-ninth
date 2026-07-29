@@ -1,9 +1,11 @@
-ALTER TABLE dialogue_state ADD COLUMN tg_account_id BIGINT;
+ALTER TABLE dialogue_state ADD COLUMN IF NOT EXISTS tg_account_id BIGINT;
+
+ALTER TABLE dialogue_state DROP CONSTRAINT IF EXISTS fk_dialogue_state_tg_account;
 ALTER TABLE dialogue_state ADD CONSTRAINT fk_dialogue_state_tg_account FOREIGN KEY (tg_account_id) REFERENCES tg_accounts(id) ON DELETE CASCADE;
 
-ALTER TABLE dialogue_state ADD COLUMN status VARCHAR(50) NOT NULL DEFAULT 'ACTIVE';
+ALTER TABLE dialogue_state ADD COLUMN IF NOT EXISTS status VARCHAR(50) NOT NULL DEFAULT 'ACTIVE';
 
-CREATE INDEX idx_dialogue_state_status_time ON dialogue_state(status, updated_at DESC);
+CREATE INDEX IF NOT EXISTS idx_dialogue_state_status_time ON dialogue_state(status, updated_at DESC);
 
 DROP VIEW IF EXISTS unified_inbox_view;
 CREATE VIEW unified_inbox_view AS
