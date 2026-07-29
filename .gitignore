@@ -1,4 +1,4 @@
 # Eneik orchestrator internal record files - never part of product code
 .eneik/
+data/
 target/
-mvn_test.log
