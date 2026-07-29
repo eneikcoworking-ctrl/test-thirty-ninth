@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AccessPortal - Mobile Access Dashboard</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Atkinson Hyperlegible Font for Accessibility -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#a7c8ff",
+                    "surface-variant": "#e5e2e1",
+                    "outline-variant": "#c3c6d1",
+                    "outline": "#737780",
+                    "primary-container": "#003366",
+                    "on-surface": "#1c1b1b",
+                    "primary": "#001e40",
+                    "on-tertiary-fixed": "#341100",
+                    "on-primary-container": "#799dd6",
+                    "on-secondary": "#ffffff",
+                    "surface-container-high": "#ebe7e7",
+                    "on-tertiary-fixed-variant": "#723610",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed-variant": "#1f477b",
+                    "surface-container": "#f0edec",
+                    "secondary-fixed": "#d8e2ff",
+                    "tertiary-container": "#592300",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed": "#ffdbca",
+                    "tertiary": "#381300",
+                    "secondary-container": "#0070ea",
+                    "on-secondary-fixed": "#001a41",
+                    "on-surface-variant": "#43474f",
+                    "on-tertiary-container": "#d8885c",
+                    "secondary-fixed-dim": "#adc7ff",
+                    "surface-container-low": "#f6f3f2",
+                    "surface": "#fcf9f8",
+                    "inverse-surface": "#313030",
+                    "background": "#fcf9f8",
+                    "surface-tint": "#3a5f94",
+                    "on-primary": "#ffffff",
+                    "surface-bright": "#fcf9f8",
+                    "surface-dim": "#dcd9d9",
+                    "tertiary-fixed-dim": "#ffb690",
+                    "on-tertiary": "#ffffff",
+                    "secondary": "#0059bb",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#a7c8ff",
+                    "error": "#ba1a1a",
+                    "inverse-on-surface": "#f3f0ef",
+                    "on-primary-fixed": "#001b3c",
+                    "on-background": "#1c1b1b",
+                    "surface-container-highest": "#e5e2e1",
+                    "on-secondary-fixed-variant": "#004493",
+                    "on-secondary-container": "#fefcff",
+                    "on-error": "#ffffff",
+                    "primary-fixed": "#d5e3ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "base": "8px",
+                    "xs": "4px",
+                    "margin-mobile": "16px",
+                    "xxl": "48px",
+                    "margin-desktop": "32px",
+                    "gutter": "16px",
+                    "xl": "32px",
+                    "lg": "24px",
+                    "sm": "8px",
+                    "touch-target-min": "44px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Atkinson Hyperlegible Next"],
+                    "button": ["Atkinson Hyperlegible Next"],
+                    "headline-xl-mobile": ["Atkinson Hyperlegible Next"],
+                    "headline-xl": ["Atkinson Hyperlegible Next"],
+                    "body-md": ["Atkinson Hyperlegible Next"],
+                    "label-lg": ["Atkinson Hyperlegible Next"],
+                    "headline-lg": ["Atkinson Hyperlegible Next"],
+                    "headline-md": ["Atkinson Hyperlegible Next"],
+                    "body-lg": ["Atkinson Hyperlegible Next"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "button": ["16px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "headline-xl-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "800"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .focus-ring:focus-visible {
+            outline: 3px solid #0059bb;
+            outline-offset: 2px;
+        }
+        body {
+            font-family: 'Atkinson Hyperlegible Next', sans-serif;
+            background-color: #fcf9f8;
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col min-h-screen text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full bg-surface border-b border-outline-variant flex justify-between items-center px-margin-mobile md:px-margin-desktop h-[64px] z-50">
+<div class="flex items-center gap-md">
+<button aria-label="Open Menu" class="material-symbols-outlined p-sm hover:bg-surface-container-high transition-colors focus-ring rounded-full text-on-surface-variant">menu</button>
+<span class="font-headline-md text-headline-md-mobile md:text-headline-md text-primary tracking-tight">AccessPortal</span>
+</div>
+<button aria-label="Your Account" class="material-symbols-outlined p-sm hover:bg-surface-container-high transition-colors focus-ring rounded-full text-on-surface-variant">account_circle</button>
+</header>
+<!-- Main Content -->
+<main class="flex-grow pt-[64px] pb-xxl px-margin-mobile md:px-margin-desktop max-w-[800px] mx-auto w-full">
+<!-- Hero Section -->
+<section class="mt-lg mb-xl">
+<h1 class="font-headline-xl-mobile md:font-headline-xl text-headline-xl-mobile md:text-headline-xl text-primary mb-sm">Mobile Access Dashboard</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Welcome back. Manage your accessibility profile and applications efficiently.</p>
+</section>
+<!-- Quick Actions Bento Grid -->
+<section class="mb-xl">
+<h2 class="font-label-lg text-label-lg text-on-surface-variant uppercase mb-md tracking-wider">Quick Actions</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<button class="flex items-center gap-md p-lg bg-surface-container-lowest border border-outline-variant rounded-xl focus-ring hover:bg-primary-fixed-dim transition-all group min-h-[80px] w-full text-left">
+<span class="material-symbols-outlined text-[32px] text-primary group-hover:scale-110 transition-transform">add_circle</span>
+<div>
+<span class="block font-headline-md text-headline-md-mobile text-on-primary-fixed">New Application</span>
+<span class="block font-body-md text-body-md text-on-surface-variant">Start a new request</span>
+</div>
+</button>
+<button class="flex items-center gap-md p-lg bg-surface-container-lowest border border-outline-variant rounded-xl focus-ring hover:bg-secondary-fixed transition-all group min-h-[80px] w-full text-left">
+<span class="material-symbols-outlined text-[32px] text-secondary group-hover:scale-110 transition-transform">library_books</span>
+<div>
+<span class="block font-headline-md text-headline-md-mobile text-on-secondary-fixed">View Resources</span>
+<span class="block font-body-md text-body-md text-on-surface-variant">Access help &amp; guides</span>
+</div>
+</button>
+</div>
+</section>
+<!-- Application Status List -->
+<section class="mb-xl">
+<h2 class="font-label-lg text-label-lg text-on-surface-variant uppercase mb-md tracking-wider">Application Status</h2>
+<div class="bg-surface-container rounded-xl overflow-hidden border border-outline-variant">
+<!-- List Item 1 -->
+<div class="flex items-center justify-between p-lg border-b border-outline-variant bg-surface-container-lowest hover:bg-surface-container transition-colors min-h-[88px]">
+<div class="flex flex-col">
+<span class="font-headline-md text-[18px] text-on-surface">Education Grant 2024</span>
+<span class="font-body-md text-body-md text-on-surface-variant">ID: #882193</span>
+</div>
+<div class="flex items-center gap-xs px-md py-xs bg-tertiary-fixed text-on-tertiary-fixed rounded-full">
+<span class="material-symbols-outlined text-[18px]">pending_actions</span>
+<span class="font-label-lg text-label-lg">In Review</span>
+</div>
+</div>
+<!-- List Item 2 -->
+<div class="flex items-center justify-between p-lg border-b border-outline-variant bg-surface-container-lowest hover:bg-surface-container transition-colors min-h-[88px]">
+<div class="flex flex-col">
+<span class="font-headline-md text-[18px] text-on-surface">Transport Assistance</span>
+<span class="font-body-md text-body-md text-on-surface-variant">ID: #774120</span>
+</div>
+<div class="flex items-center gap-xs px-md py-xs bg-secondary-fixed-dim text-on-secondary-fixed rounded-full">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-lg text-label-lg">Approved</span>
+</div>
+</div>
+<!-- List Item 3 -->
+<div class="flex items-center justify-between p-lg bg-surface-container-lowest hover:bg-surface-container transition-colors min-h-[88px]">
+<div class="flex flex-col">
+<span class="font-headline-md text-[18px] text-on-surface">Housing Accessibility</span>
+<span class="font-body-md text-body-md text-on-surface-variant">ID: #993102</span>
+</div>
+<div class="flex items-center gap-xs px-md py-xs bg-error-container text-on-error-container rounded-full">
+<span class="material-symbols-outlined text-[18px]">error</span>
+<span class="font-label-lg text-label-lg">Action Needed</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Accessibility Settings Toggle Section -->
+<section class="mb-xl p-lg bg-secondary-fixed text-on-secondary-fixed rounded-xl border-2 border-secondary">
+<h2 class="font-headline-md text-headline-md-mobile mb-md flex items-center gap-sm">
+<span class="material-symbols-outlined">settings_accessibility</span>
+                Accessibility Settings
+            </h2>
+<div class="space-y-md">
+<!-- Toggle 1 -->
+<label class="flex items-center justify-between p-md bg-surface-container-lowest rounded-lg cursor-pointer focus-within:ring-4 ring-primary-fixed-dim">
+<span class="font-body-lg text-body-lg font-bold text-primary">Increase Contrast</span>
+<div class="relative inline-block w-12 h-6 transition duration-200 ease-in">
+<input class="peer absolute w-6 h-6 opacity-0 z-10 cursor-pointer" id="contrast-toggle" type="checkbox"/>
+<span class="block w-full h-full bg-outline-variant rounded-full peer-checked:bg-secondary transition-colors"></span>
+<span class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-6"></span>
+</div>
+</label>
+<!-- Toggle 2 -->
+<div class="p-md bg-surface-container-lowest rounded-lg">
+<div class="flex justify-between items-center mb-sm">
+<span class="font-body-lg text-body-lg font-bold text-primary">Text Size</span>
+<span class="font-label-lg text-label-lg px-sm py-xs bg-primary-fixed text-on-primary-fixed rounded">Large (125%)</span>
+</div>
+<input aria-label="Adjust Text Size" class="w-full h-2 bg-outline-variant rounded-lg appearance-none cursor-pointer accent-secondary focus-ring" max="3" min="1" type="range" value="2"/>
+<div class="flex justify-between mt-xs font-label-lg text-on-surface-variant">
+<span>Standard</span>
+<span>Very Large</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Visual Decorator: Placeholder for Data Graphic -->
+<div class="relative w-full h-48 rounded-xl overflow-hidden bg-surface-container-high border border-outline-variant mb-xl">
+<div class="w-full h-full bg-cover bg-center opacity-80" data-alt="A clean, minimalist high-contrast line chart demonstrating data trends in a soft corporate UI. The colors use a palette of deep navy blues and bright secondary blues on a neutral light grey background. The lighting is even and professional, suggesting a modern SaaS dashboard aesthetic for high accessibility standards." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBCTYf1DAiljgIEAWlrcvHLzQ0lSWjnE7kTu0zsj7JgpK2vQRr8lkrU10tZrK1Gm6wgw2JWAaqchwI8bSoRZE1sdOBrtx_OubllvIsLHPNncPQtSq1u_FQQWsr0qbKz5eJcUfBeFgLeSgT7KMNwwjmpBUlph9xix4niwSq02C0auz8jqeUpiax08rj6g62uX_81KTvAnkFVVtVtWynWkVJLIGczvVTqmORI07Irm2o77O8imtwt-A2MJxbMAs-2uG8-4Q9zYapXtW0')"></div>
+<div class="absolute inset-0 flex items-center justify-center bg-primary/10">
+<div class="text-center p-md bg-white/90 backdrop-blur rounded-lg border border-primary/20">
+<span class="block font-headline-md text-primary">Usage Statistics</span>
+<span class="font-body-md text-on-surface-variant">Accessible data visualization reference</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-highest border-t border-outline-variant w-full mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center gap-lg p-margin-mobile md:p-margin-desktop max-w-[800px] mx-auto">
+<div class="flex flex-col items-center md:items-start gap-xs">
+<span class="font-headline-sm text-headline-sm text-primary">AccessPortal</span>
+<span class="font-body-md text-body-md text-on-surface-variant">© 2024 Accessibility First. All rights reserved.</span>
+</div>
+<nav class="flex flex-wrap justify-center gap-md">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors focus-ring p-xs underline" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors focus-ring p-xs underline" href="#">Terms of Service</a>
+<a class="font-body-md text-body-md text-primary font-bold underline transition-colors focus-ring p-xs" href="#">Accessibility Statement</a>
+</nav>
+</div>
+</footer>
+<!-- Micro-interactions Script -->
+<script>
+        // Simple accessibility toggle visual feedback
+        const contrastToggle = document.getElementById('contrast-toggle');
+        contrastToggle.addEventListener('change', () => {
+            if (contrastToggle.checked) {
+                document.body.classList.add('contrast-enhanced');
+                console.log('High contrast mode simulated');
+            } else {
+                document.body.classList.remove('contrast-enhanced');
+            }
+        });
+
+        // Touch interaction feedback for bento cards
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.classList.add('scale-95');
+            });
+            button.addEventListener('mouseup', () => {
+                button.classList.remove('scale-95');
+            });
+            button.addEventListener('mouseleave', () => {
+                button.classList.remove('scale-95');
+            });
+        });
+    </script>
+</body></html>
