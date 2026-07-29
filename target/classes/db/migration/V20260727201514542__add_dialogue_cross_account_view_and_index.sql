@@ -1,11 +1,17 @@
+-- Drop the view if it exists so we can recreate it with new fields
+DROP VIEW IF EXISTS unified_inbox_view;
+
+-- 1. Add tg_account_id linking dialogue_state to tg_accounts
 ALTER TABLE dialogue_state ADD COLUMN tg_account_id BIGINT;
 ALTER TABLE dialogue_state ADD CONSTRAINT fk_dialogue_state_tg_account FOREIGN KEY (tg_account_id) REFERENCES tg_accounts(id) ON DELETE CASCADE;
 
+-- 2. Add status column to represent current dialogue / conversation status
 ALTER TABLE dialogue_state ADD COLUMN status VARCHAR(50) NOT NULL DEFAULT 'ACTIVE';
 
+-- 3. Create optimized composite index on conversation status and timestamp (updated_at)
 CREATE INDEX idx_dialogue_state_status_time ON dialogue_state(status, updated_at DESC);
 
-DROP VIEW IF EXISTS unified_inbox_view;
+-- 4. Create unified view for cross-account dialogues (unified inbox)
 CREATE VIEW unified_inbox_view AS
 SELECT
     ds.id AS dialogue_id,
