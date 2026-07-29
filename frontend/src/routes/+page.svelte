@@ -68,22 +68,38 @@
     }
 </script>
 
-<div class="min-h-screen bg-surface text-on-surface pb-24 md:pb-8">
+<div class="min-h-screen bg-surface text-on-surface pb-12 md:pb-8">
 	<!-- Top App Bar -->
 	<header class="bg-surface border-b border-outline-variant px-4 py-3 flex items-center justify-between sticky top-0 z-40 h-16">
 		<div class="flex items-center gap-3">
-			<span class="material-symbols-outlined text-on-surface" data-icon="menu">menu</span>
+			<button
+				type="button"
+				class="w-11 h-11 flex items-center justify-center hover:bg-surface-container-highest rounded-full transition-colors focus:ring-2 focus:ring-primary focus:outline-none"
+				aria-label="Open Menu"
+			>
+				<span class="material-symbols-outlined text-on-surface" data-icon="menu">menu</span>
+			</button>
 			<h1 class="text-title-lg font-title-lg text-on-surface m-0">Campaign Dashboard</h1>
 		</div>
-		<div class="flex items-center gap-4">
-			<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
-			<div class="w-8 h-8 bg-surface-container-highest rounded-full flex items-center justify-center border border-outline-variant">
+		<div class="flex items-center gap-2">
+			<button
+				type="button"
+				class="w-11 h-11 flex items-center justify-center hover:bg-surface-container-highest rounded-full transition-colors focus:ring-2 focus:ring-primary focus:outline-none"
+				aria-label="Notifications"
+			>
+				<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
+			</button>
+			<button
+				type="button"
+				class="w-11 h-11 bg-surface-container-highest rounded-full flex items-center justify-center border border-outline-variant hover:bg-surface-container-low transition-colors focus:ring-2 focus:ring-primary focus:outline-none"
+				aria-label="Account Profile"
+			>
 				<span class="material-symbols-outlined text-on-surface text-sm" data-icon="person">person</span>
-			</div>
+			</button>
 		</div>
 	</header>
 
-	<main class="max-w-7xl mx-auto p-4 lg:p-8">
+	<main class="max-w-7xl mx-auto p-4 lg:p-8 pb-28 md:pb-8">
         <!-- Title & Subtitle -->
         <div class="mb-8">
             <h2 class="text-display-sm font-display-sm">Launch New Campaign</h2>
@@ -107,14 +123,14 @@
                                 type="file"
                                 accept=".csv,.txt"
                                 onchange={handleFileChange}
-                                class="block w-full text-body-md text-on-surface border border-outline-variant rounded p-2 focus:border-primary focus:ring-1 focus:ring-primary outline-none file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary-fixed file:text-primary hover:file:bg-primary/20"
+                                class="block w-full text-body-md text-on-surface border border-outline-variant rounded p-3 min-h-[44px] focus:border-primary focus:ring-1 focus:ring-primary outline-none file:mr-4 file:py-2 file:px-4 file:min-h-[44px] file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary-fixed file:text-primary hover:file:bg-primary/20"
                                 disabled={isUploading}
                                 aria-disabled={isUploading}
                             />
                         </div>
 						<button
 							type="submit"
-							class="bg-primary text-surface px-4 py-2 rounded text-label-md font-bold uppercase tracking-wider self-start disabled:opacity-50 min-h-[44px] hover:bg-primary/90 focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-colors"
+							class="bg-primary text-surface px-4 py-2 rounded text-label-md font-bold uppercase tracking-wider w-full md:w-auto self-start disabled:opacity-50 min-h-[44px] hover:bg-primary/90 focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-colors"
 							disabled={!leadsFile || isUploading}
                             aria-disabled={!leadsFile || isUploading}
 						>
