@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LeadGen Bot - Dashboard</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container": "#e5eeff",
+                    "on-error": "#ffffff",
+                    "surface": "#f8f9ff",
+                    "on-surface": "#0b1c30",
+                    "on-primary-fixed": "#001452",
+                    "outline": "#737688",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-tertiary-container": "#ffe0b9",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-primary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed-dim": "#3ce36a",
+                    "primary-container": "#0052ff",
+                    "on-tertiary-fixed-variant": "#624000",
+                    "surface-container-low": "#eff4ff",
+                    "secondary-fixed": "#69ff87",
+                    "primary-fixed-dim": "#b7c4ff",
+                    "surface-bright": "#f8f9ff",
+                    "on-error-container": "#93000a",
+                    "surface-container-high": "#dce9ff",
+                    "on-secondary-container": "#00732c",
+                    "on-primary-fixed-variant": "#0038b6",
+                    "secondary-container": "#5cfd80",
+                    "tertiary-fixed": "#ffddb3",
+                    "on-secondary-fixed": "#002108",
+                    "on-secondary-fixed-variant": "#00531e",
+                    "tertiary-container": "#8c5c00",
+                    "inverse-surface": "#213145",
+                    "on-tertiary": "#ffffff",
+                    "on-surface-variant": "#434656",
+                    "secondary": "#006e2a",
+                    "on-tertiary-fixed": "#291800",
+                    "tertiary": "#6c4600",
+                    "on-primary-container": "#dfe3ff",
+                    "inverse-primary": "#b7c4ff",
+                    "surface-variant": "#d3e4fe",
+                    "error": "#ba1a1a",
+                    "on-background": "#0b1c30",
+                    "tertiary-fixed-dim": "#ffb950",
+                    "surface-tint": "#004ced",
+                    "primary": "#003ec7",
+                    "surface-dim": "#cbdbf5",
+                    "background": "#f8f9ff",
+                    "outline-variant": "#c3c5d9",
+                    "on-secondary": "#ffffff",
+                    "primary-fixed": "#dde1ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "touch-target-min": "44px",
+                    "margin-desktop": "32px",
+                    "gutter": "16px",
+                    "unit": "4px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Inter"],
+                    "label-caps": ["JetBrains Mono"],
+                    "status-pill": ["Inter"],
+                    "body-md": ["Inter"],
+                    "display-lg-mobile": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "status-pill": ["12px", {"lineHeight": "12px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            user-select: none;
+        }
+        .scroll-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scroll-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-margin-mobile h-touch-target-min bg-surface dark:bg-surface border-b border-outline-variant dark:border-outline transition-colors duration-200 ease-in-out">
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center w-touch-target-min h-touch-target-min text-on-surface hover:bg-surface-container-low dark:hover:bg-surface-container-highest rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">LeadGen Bot</h1>
+</div>
+<div class="flex items-center">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a corporate user for a SaaS platform. The image should feature soft, studio lighting with a neutral, clean background. The individual is dressed in modern business casual attire, looking directly at the camera with a confident and helpful expression. The color palette is composed of soft blues and crisp whites to match the professional brand identity of LeadGen Bot." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxh11-t4UrvCD549CublA7w1cj05p5gOXw08Pv3Xinhs-Rj5YWjiGKQ9ppECdLfuxAqTXFKpjGx3VzwE0UGgKrx5Au_LOSnSMJ8pUHOVJLPmohzSlJqs5TL9y5eg4CIgVrZw95068fPflA4nMSFT5kr_7o2IHah5nS_R6jVmlrSWSfRo8jqIx9oGvVTOoCA9iR1gRMVH4FaWxEhcCW4Mzvld-hb_UW8qokZO6up0YOhQyilXqGn2OMOxZWZ5JwrnzuHFZdCtxc4s0"/>
+</div>
+</div>
+</header>
+<!-- Main Content Wrapper -->
+<main class="pt-20 pb-24 px-margin-mobile max-w-5xl mx-auto">
+<!-- Welcome Hero Section -->
+<section class="mb-8">
+<h2 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-on-surface tracking-tight">System Status: <span class="text-secondary">Optimized</span></h2>
+<p class="text-on-surface-variant font-body-md mt-2">AI Agents are currently processing 142 leads across 4 active campaigns.</p>
+</section>
+<!-- Quick Actions Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-gutter mb-8">
+<button class="flex items-center justify-between p-gutter bg-primary text-on-primary rounded-xl h-24 hover:opacity-90 transition-all active:scale-[0.98] group">
+<div class="text-left">
+<span class="block font-headline-md">Add New Account</span>
+<span class="block font-body-sm opacity-80">OTP/Session upload</span>
+</div>
+<div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl" data-icon="person_add">person_add</span>
+</div>
+</button>
+<button class="flex items-center justify-between p-gutter bg-secondary text-on-secondary rounded-xl h-24 hover:opacity-90 transition-all active:scale-[0.98] group">
+<div class="text-left">
+<span class="block font-headline-md">Launch Campaign</span>
+<span class="block font-body-sm opacity-80">Start automated outreach</span>
+</div>
+<div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl" data-icon="rocket_launch">rocket_launch</span>
+</div>
+</button>
+</section>
+<!-- Stats Overview -->
+<section class="mb-10">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Performance Metrics</h3>
+<span class="text-primary font-label-caps text-label-caps">LIVE UPDATE</span>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<!-- Stat Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded-xl">
+<span class="block text-on-surface-variant font-label-caps text-label-caps mb-2">CONNECTED</span>
+<div class="flex items-end justify-between">
+<span class="text-3xl font-bold text-on-surface">24</span>
+<span class="text-secondary text-sm font-bold flex items-center">
+<span class="material-symbols-outlined text-xs" data-icon="arrow_upward">arrow_upward</span>
+                            2
+                        </span>
+</div>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded-xl">
+<span class="block text-on-surface-variant font-label-caps text-label-caps mb-2">DIALOGUES</span>
+<div class="flex items-end justify-between">
+<span class="text-3xl font-bold text-on-surface">89</span>
+<span class="text-primary text-sm font-bold">ACTV</span>
+</div>
+</div>
+<!-- Stat Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded-xl">
+<span class="block text-on-surface-variant font-label-caps text-label-caps mb-2">NEW LEADS</span>
+<div class="flex items-end justify-between">
+<span class="text-3xl font-bold text-on-surface">12</span>
+<span class="text-secondary text-sm font-bold flex items-center">
+<span class="material-symbols-outlined text-xs" data-icon="add">add</span>
+                            4
+                        </span>
+</div>
+</div>
+<!-- Stat Card 4 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded-xl">
+<span class="block text-on-surface-variant font-label-caps text-label-caps mb-2">SUCCESS</span>
+<div class="flex items-end justify-between">
+<span class="text-3xl font-bold text-on-surface">18%</span>
+<span class="text-tertiary text-sm font-bold">+1.2</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Unified Inbox Preview -->
+<section class="mb-8">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-headline-md text-headline-md">Unified Inbox</h3>
+<a class="text-primary font-body-sm font-semibold hover:underline" href="#">View All</a>
+</div>
+<div class="space-y-3">
+<!-- Inbox Item 1 - AI Active -->
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded-xl flex items-center gap-4 hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="relative w-12 h-12 rounded-full overflow-hidden shrink-0 border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Profile picture of a professional prospect in a high-density urban office setting. The style is sharp and modern with natural daylight from large windows. The prospect is looking away from the camera, engaged in work, creating an authentic lead-generation context. Deep blues and grays dominate the scene." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5bTcxr5b1JKSiWXyqJDCRDs_9ooJni-_yM90CmK5aXCGu47lOQFEXK__2yL0IoI6M8Z6icgmM2LhV-8zaCMbK2TeHntLHjWX_plV3drvNmVK7sbk5PCyAWu-H8SclzGBbpxbG9h1S4tWy0HhLALklHOPBeFii12PnoxdsTArnTJcMp7AXqvBsuRGs09BOLArLXYGlK97mnLOLJc-3jFtlwcV0ZiW012sjgPSbPymvQvvnFGvCW9yj3ZOgDmHR3BJ0kXtT1WSmC60"/>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-secondary border-2 border-white rounded-full"></div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<span class="font-bold text-on-surface truncate">Alex Rivera</span>
+<span class="text-xs text-on-surface-variant">2m ago</span>
+</div>
+<p class="text-on-surface-variant text-sm truncate">"That sounds interesting. Can you send over a pricing deck for the enterprise..."</p>
+</div>
+<div class="shrink-0 flex flex-col items-end gap-1">
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full font-status-pill text-status-pill uppercase">AI ACTIVE</span>
+</div>
+</div>
+<!-- Inbox Item 2 - Human Required -->
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded-xl flex items-center gap-4 hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="relative w-12 h-12 rounded-full overflow-hidden shrink-0 border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Headshot of a modern executive in a minimalist architectural environment. The lighting is sophisticated, with a clean professional focus. The individual is a woman with glasses, expressing interest. The overall aesthetic is clean and high-end, utilizing the brand's blue and white color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8wqNjMuf4auYrlft1d9-785Ykr61MdKzQ8dYtE5qWc82eV-wftAze5e7DXRgIB6MY75UxiAjpZ0RUB_LU0SmZAo2lle12ueMRqVl8ZfSxolMs98VgrKnD-HxJoNsktarqupmGei0aiAmIIz68KdF6nsMQVpng9WRO6qQ3KRrsXX40SLTC7imSNIukRfTAnrxtwytLRKFrXZGHRXVpktegBmhsR8_pP6jtwLYXHV3xj9j3XvU3FZRUbq_EMWHiY4PeH5Gxhml8KyQ"/>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-tertiary border-2 border-white rounded-full"></div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<span class="font-bold text-on-surface truncate">Jordan Smith</span>
+<span class="text-xs text-on-surface-variant">14m ago</span>
+</div>
+<p class="text-on-surface-variant text-sm truncate">"I'd like to discuss the integration specifics with our lead developer on Tuesday."</p>
+</div>
+<div class="shrink-0 flex flex-col items-end gap-1">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-2 py-0.5 rounded-full font-status-pill text-status-pill uppercase">HUMAN REQ</span>
+</div>
+</div>
+<!-- Inbox Item 3 - AI Active -->
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded-xl flex items-center gap-4 hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="relative w-12 h-12 rounded-full overflow-hidden shrink-0 border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Portrait of a young entrepreneur in a modern tech hub office. The lighting is bright and energetic, with hints of green and blue in the background to signify a vibrant workplace. The photo is high-resolution, sharp, and fits the corporate modern aesthetic of a lead management dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEutI-w_DtGlz26U6RORElAKhZi7AvKf3PrjOqvKDf-prXfDWq7aUfjBzE8W1e9SIOKsBXpeBuWYszO45EKaOWR8pP-qt3SqW-2vK8L42OKLqKJ-6KR_uTxngt_Vz3ZOP8cSoOr264vOcSjrcKtbdRKOoPTpgJ1azsm9w8E_bbQ03ppu3YJTZbUVJU-bICDsWbheTqaG5H_7-Z9xylt0cUgm-4nL84KpH_flIe2R9p5uqW0xD5v--IsOKMoWpVN5GJz9DSGiTziL8"/>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-secondary border-2 border-white rounded-full"></div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<span class="font-bold text-on-surface truncate">Samantha Low</span>
+<span class="text-xs text-on-surface-variant">1h ago</span>
+</div>
+<p class="text-on-surface-variant text-sm truncate">"Thank you for reaching out. We are currently reviewing our outreach tools."</p>
+</div>
+<div class="shrink-0 flex flex-col items-end gap-1">
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full font-status-pill text-status-pill uppercase">AI ACTIVE</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Campaigns Visual Insight Placeholder -->
+<section class="mb-8">
+<div class="bg-inverse-surface text-inverse-on-surface p-6 rounded-2xl relative overflow-hidden h-48 flex flex-col justify-center">
+
+<div class="relative z-10">
+<h3 class="font-headline-md mb-2">Outreach Velocity</h3>
+<p class="text-sm opacity-80 max-w-xs">Your system is currently outperforming 92% of users in the 'FinTech' sector.</p>
+<div class="mt-4 flex gap-2">
+<div class="h-2 w-16 bg-primary rounded-full"></div>
+<div class="h-2 w-12 bg-white/20 rounded-full"></div>
+<div class="h-2 w-20 bg-white/20 rounded-full"></div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-margin-mobile py-2 bg-surface-container dark:bg-surface-container border-t border-outline-variant dark:border-outline flat no shadows">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-all h-touch-target-min w-16 rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="all_inbox">all_inbox</span>
+<span class="font-label-caps text-label-caps mt-1">Inbox</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-all h-touch-target-min w-16 rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+<span class="font-label-caps text-label-caps mt-1">Accounts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-all h-touch-target-min w-16 rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+<span class="font-label-caps text-label-caps mt-1">Campaigns</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container dark:bg-primary dark:text-on-primary rounded-full px-4 py-1 transition-transform scale-95 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="font-label-caps text-label-caps mt-1">AI</span>
+</a>
+</nav>
+<!-- FAB for focused task -->
+<div class="fixed bottom-24 right-4 md:right-8 z-40">
+<button class="w-14 h-14 bg-primary text-on-primary rounded-2xl shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
+</button>
+</div>
+<script>
+        // Simple ripple effect for buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                let ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                this.appendChild(ripple);
+                let x = e.clientX - e.target.offsetLeft;
+                let y = e.clientY - e.target.offsetTop;
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Update current time in "LIVE UPDATE"
+        function updateLiveTag() {
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
+            const tags = document.querySelectorAll('.text-primary.font-label-caps');
+            tags.forEach(tag => {
+                if (tag.innerText.includes('LIVE')) {
+                    tag.innerText = `LIVE • ${timeStr}`;
+                }
+            });
+        }
+        setInterval(updateLiveTag, 30000);
+        updateLiveTag();
+    </script>
+<style>
+        .ripple {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+</body></html>
