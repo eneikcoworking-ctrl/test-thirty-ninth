@@ -24,6 +24,7 @@ class LlmOfferPersonalizationServiceTest {
     void testPersonalizeOffer_success() throws Exception {
         // Given lead bio data
         Lead lead = new Lead();
+        lead.setId(1L);
         lead.setMetadata("CTO at TechCorp, interested in AI");
         String baseOffer = "Hello, check out our new product.";
 
@@ -40,6 +41,7 @@ class LlmOfferPersonalizationServiceTest {
     void testPersonalizeOffer_fallbackOnLengthExceeded() throws Exception {
         // Given a strict prompt template
         Lead lead = new Lead();
+        lead.setId(2L);
         lead.setMetadata("Engineer");
         String baseOffer = "Short offer.";
 
@@ -56,6 +58,7 @@ class LlmOfferPersonalizationServiceTest {
     @Test
     void testPersonalizeOffer_fallbackOnAiRefusal() throws Exception {
         Lead lead = new Lead();
+        lead.setId(3L);
         lead.setMetadata("Engineer");
         String baseOffer = "Short offer.";
 
@@ -70,6 +73,7 @@ class LlmOfferPersonalizationServiceTest {
     @Test
     void testPersonalizeOffer_fallbackOnException() throws Exception {
         Lead lead = new Lead();
+        lead.setId(4L);
         lead.setMetadata("Engineer");
         String baseOffer = "Short offer.";
 
@@ -84,6 +88,7 @@ class LlmOfferPersonalizationServiceTest {
     @Test
     void testPersonalizeOffer_fallbackOnEmptyMetadata() {
         Lead lead = new Lead();
+        lead.setId(5L);
         lead.setMetadata(null);
         String baseOffer = "Short offer.";
 

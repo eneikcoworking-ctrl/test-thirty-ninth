@@ -1,10 +1,14 @@
 package com.eneik.generated.ai;
 
 import com.eneik.generated.campaign.model.Lead;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LlmOfferPersonalizationService {
+
+    private static final Logger log = LoggerFactory.getLogger(LlmOfferPersonalizationService.class);
 
     private final LlmClient llmClient;
 
@@ -63,7 +67,7 @@ public class LlmOfferPersonalizationService {
             return generatedText; // ASSUMED generation
 
         } catch (Exception e) {
-            // Log exception here if necessary
+            log.error("Failed to personalize offer for lead ID: {}", lead.getId(), e);
             return baseOffer; // VERIFIED fallback
         }
     }
